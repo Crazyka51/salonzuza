@@ -14,7 +14,7 @@ interface AccessDeniedProps {
 
 export function AccessDenied({
   requiredPermissions = [],
-  message = "You don't have permission to access this page.",
+  message = "Nemáte oprávnění k přístupu na tuto stránku.",
   showBackButton = true,
   showHomeButton = true,
 }: AccessDeniedProps) {
@@ -37,7 +37,7 @@ export function AccessDenied({
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
             <ShieldX className="h-6 w-6 text-destructive" />
           </div>
-          <CardTitle className="text-2xl">Access Denied</CardTitle>
+          <CardTitle className="text-2xl">Přístup odepřen</CardTitle>
           <CardDescription>{message}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -45,7 +45,7 @@ export function AccessDenied({
             <Alert>
               <AlertDescription>
                 <div className="space-y-2">
-                  <p className="font-medium">Required permissions:</p>
+                  <p className="font-medium">Požadovaná oprávnění:</p>
                   <ul className="list-disc list-inside text-sm space-y-1">
                     {requiredPermissions.map((permission) => (
                       <li key={permission} className="font-mono">
@@ -62,13 +62,13 @@ export function AccessDenied({
             {showBackButton && (
               <Button variant="outline" onClick={handleGoBack} className="flex-1 bg-transparent">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Go Back
+                Zpět
               </Button>
             )}
             {showHomeButton && (
               <Button onClick={handleGoHome} className="flex-1">
                 <Home className="h-4 w-4 mr-2" />
-                Dashboard
+                Přehled
               </Button>
             )}
           </div>

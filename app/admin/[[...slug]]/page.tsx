@@ -8,10 +8,25 @@ export default function AdminPage({ params }: { params: { slug?: string[] } }) {
 // Generate metadata for admin pages
 export async function generateMetadata({ params }: { params: { slug?: string[] } }) {
   const slug = params.slug || []
-  const pageName = slug.length > 0 ? slug[0] : "dashboard"
+  const pageName = slug.length > 0 ? slug[0] : "prehled"
+  
+  const pageNames: Record<string, string> = {
+    dashboard: "Přehled",
+    prehled: "Přehled",
+    articles: "Články",
+    users: "Uživatelé",
+    categories: "Kategorie",
+    media: "Média",
+    settings: "Nastavení",
+    analytics: "Analýzy",
+    comments: "Komentáře",
+    newsletter: "Newsletter",
+  }
+
+  const czechPageName = pageNames[pageName] || pageName.charAt(0).toUpperCase() + pageName.slice(1)
 
   return {
-    title: `${pageName.charAt(0).toUpperCase() + pageName.slice(1)} - Admin Panel`,
-    description: `Admin panel ${pageName} page`,
+    title: `${czechPageName} - Administrace`,
+    description: `Administrační panel - ${czechPageName}`,
   }
 }

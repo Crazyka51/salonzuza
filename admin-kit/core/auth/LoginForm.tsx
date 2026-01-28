@@ -19,8 +19,8 @@ interface LoginFormProps {
 }
 
 export function LoginForm({
-  title = "Admin Login",
-  description = "Sign in to your admin account",
+  title = "Přihlášení do administrace",
+  description = "Přihlaste se ke svému administrátorskému účtu",
   onSuccess,
   className,
 }: LoginFormProps) {
@@ -71,13 +71,13 @@ export function LoginForm({
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">E-mail</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={handleChange("email")}
-                placeholder="admin@example.com"
+                placeholder="admin@priklad.cz"
                 disabled={loading}
                 className={errors.email ? "border-destructive" : ""}
               />
@@ -85,13 +85,13 @@ export function LoginForm({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Heslo</Label>
               <Input
                 id="password"
                 type="password"
                 value={formData.password}
                 onChange={handleChange("password")}
-                placeholder="Enter your password"
+                placeholder="Zadejte své heslo"
                 disabled={loading}
                 className={errors.password ? "border-destructive" : ""}
               />
@@ -99,7 +99,7 @@ export function LoginForm({
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Přihlašování..." : "Přihlásit se"}
             </Button>
           </form>
         </CardContent>

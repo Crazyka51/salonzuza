@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +30,11 @@ import {
   Monitor,
   ChevronDown,
   ChevronRight,
+  Zap,
+  Image,
+  Folder,
+  Database,
+  Mail,
 } from "lucide-react"
 import { useAdmin } from "../context/AdminProvider"
 import { useAuth } from "../auth/AuthProvider"
@@ -43,30 +49,79 @@ interface AdminLayoutProps {
 const defaultNavigation: NavigationItem[] = [
   {
     id: "dashboard",
-    label: "Dashboard",
+    label: "Přehled",
     href: "/admin",
     icon: "Home",
   },
   {
+    id: "articles",
+    label: "Články",
+    href: "/admin/articles",
+    icon: "FileText",
+    permission: "posts.read",
+  },
+  {
+    id: "media",
+    label: "Média",
+    href: "/admin/media",
+    icon: "Image",
+    permission: "media.read",
+  },
+  {
     id: "users",
-    label: "Users",
+    label: "Uživatelé",
     href: "/admin/users",
     icon: "Users",
     permission: "users.read",
   },
   {
-    id: "posts",
-    label: "Posts",
-    href: "/admin/posts",
-    icon: "FileText",
-    permission: "posts.read",
-  },
-  {
     id: "settings",
-    label: "Settings",
+    label: "Nastavení",
     href: "/admin/settings",
     icon: "Settings",
     permission: "settings.read",
+  },
+]
+
+// Quick Actions
+const quickActions = [
+  {
+    id: "new-article",
+    title: "Nový článek",
+    icon: FileText,
+    badge: "⌘N",
+    onClick: () => (window.location.href = "/admin/articles/new"),
+  },
+  {
+    id: "add-user",
+    title: "Přidat uživatele",
+    icon: Users,
+    onClick: () => (window.location.href = "/admin/users/new"),
+  },
+  {
+    id: "upload-media",
+    title: "Nahrát média",
+    icon: Image,
+    badge: "⌘U",
+    onClick: () => (window.location.href = "/admin/media/upload"),
+  },
+  {
+    id: "create-category",
+    title: "Nová kategorie",
+    icon: Folder,
+    onClick: () => (window.location.href = "/admin/categories/new"),
+  },
+  {
+    id: "backup",
+    title: "Záloha databáze",
+    icon: Database,
+    onClick: () => console.log("Záloha databáze"),
+  },
+  {
+    id: "newsletter",
+    title: "Newsletter",
+    icon: Mail,
+    onClick: () => (window.location.href = "/admin/newsletter"),
   },
 ]
 
@@ -84,6 +139,11 @@ const iconMap = {
   Monitor,
   ChevronDown,
   ChevronRight,
+  Zap,
+  Image,
+  Folder,
+  Database,
+  Mail,
 }
 
 export function AdminLayout({ children, navigation = defaultNavigation, className }: AdminLayoutProps) {
@@ -174,6 +234,42 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
       {/* Navigation */}
       <ScrollArea className="flex-1 px-3 py-4">
         <div className="space-y-2">{navigation.map((item) => renderNavigationItem(item))}</div>
+        
+        {/* Quick Actions Section */}
+        <Separator className="my-4" />
+        <div className="space-y-2">
+          <div className="px-3 py-2">
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+              <Zap className="h-3 w-3" />
+              Rychlé akce
+            </h3>
+          </div>
+          {quickActions.map((action) => {
+            const IconComponent = action.icon
+            return (
+              <Button
+                key={action.id}
+                variant="ghost"
+                className="w-full justify-start h-auto p-3 text-sm hover:bg-accent"
+                onClick={action.onClick}
+              >
+                <div className="flex items-center gap-3 w-full">
+                  {IconComponent && (
+                    <div className="p-1.5 rounded-md bg-primary/10 text-primary">
+                      <IconComponent className="h-3.5 w-3.5" />
+                    </div>
+                  )}
+                  <span className="flex-1 text-left">{action.title}</span>
+                  {action.badge && (
+                    <Badge variant="secondary" className="text-xs font-mono px-1.5 py-0">
+                      {action.badge}
+                    </Badge>
+                  )}
+                </div>
+              </Button>
+            )
+          })}
+        </div>
       </ScrollArea>
 
       {/* User Info */}
@@ -215,7 +311,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
         {/* Main Content */}
         <div className="flex-1 lg:ml-80">
           {/* Header */}
-          <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
             <div className="flex h-16 items-center gap-4 px-6">
               {/* Mobile Menu Button */}
               <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
@@ -228,7 +324,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder="Vyhledávání..."
                     className="w-full pl-10 pr-4 py-2 text-sm border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
@@ -253,15 +349,15 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => handleThemeChange("light")}>
                       <Sun className="h-4 w-4 mr-2" />
-                      Light
+                      Světlý
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleThemeChange("dark")}>
                       <Moon className="h-4 w-4 mr-2" />
-                      Dark
+                      Tmavý
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleThemeChange("system")}>
                       <Monitor className="h-4 w-4 mr-2" />
-                      System
+                      Systém
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -280,21 +376,21 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
                     <DropdownMenuContent className="w-56" align="end" forceMount>
                       <DropdownMenuLabel className="font-normal">
                         <div className="flex flex-col space-y-1">
-                          <p className="text-sm font-medium leading-none">{user.name || "User"}</p>
+                          <p className="text-sm font-medium leading-none">{user.name || "Uživatel"}</p>
                           <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
                         </div>
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => (window.location.href = "/admin/profile")}>
-                        Profile
+                        Profil
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => (window.location.href = "/admin/settings")}>
-                        Settings
+                        Nastavení
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={logout}>
                         <LogOut className="h-4 w-4 mr-2" />
-                        Log out
+                        Odhlásit se
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
