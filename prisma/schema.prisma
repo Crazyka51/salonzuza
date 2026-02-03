@@ -1,0 +1,80 @@
+// Databázové schéma pro Salon Zuza portfolio
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Model pro editovatelný obsah stránky (CMS)
+model ObsahStranky {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  klicObsahu   String   @unique // např. "hero_title", "hero_subtitle" 
+  nazev        String   // Lidský název pro admin panel
+  obsah        String   // Samotný text/obsah
+  typ          String   @default("text") // "text" | "html" | "markdown"
+  kategorie    String   // "hero" | "services" | "about" | "contact"
+  popis        String?  // Popis pro administrátory
+  jeAktivni    Boolean  @default(true)
+  poradoveId   Int?     // Pro řazení obsahu
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("obsah_stranky")
+}
+
+// Model pro služby salonu
+model Sluzba {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  nazev       String
+  popis       String
+  cena        Float
+  doba        Int      // v minutách
+  kategorie   String   // "damske" | "panske" | "barveni" | "kosmetika"
+  jeAktivni   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("sluzby")
+}
+
+// Model pro fotogalerii
+model Fotka {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  nazev       String
+  popis       String?
+  url         String
+  kategorie   String   // "pred_po", "prace", "salon", "hero"
+  poradoveId  Int?
+  jeAktivni   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@map("fotky")
+}
+
+// Model pro recenze zákazníků
+model Recenze {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  jmeno       String
+  text        String
+  hodnoceni   Int      // 1-5 hvězdiček
+  jeSchvalena Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("recenze")
+}
+
+// Model pro kontaktní formulář
+model ZpravaKontaktu {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  jmeno       String
+  email       String
+  telefon     String?
+  zprava      String
+  jePrecetena Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("zpravy_kontaktu")
+}

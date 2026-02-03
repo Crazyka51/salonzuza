@@ -1,0 +1,380 @@
+your-fusion-cms-project/
+├── components/                            <-- React komponenty (sdílené / veřejné / admin)
+│   ├── BookingSystem/                     <-- Hlavní modul booking systému pro Admin Panel
+│   │   ├── admin/                         <-- Komponenty specifické pro admin rozhraní
+│   │   │   ├── Dashboard.tsx              <-- Admin Dashboard (přehled, kalendář)
+│   │   │   ├── ReservationManagement.tsx  <-- Správa rezervací (seznam, filtry)
+│   │   │   ├── EmployeeManagement.tsx     <-- Správa pracovníků (CRUD)
+│   │   │   ├── ServiceManagement.tsx      <-- Správa služeb (CRUD)
+│   │   │   ├── CustomerManagement.tsx     <-- Správa zákazníků
+│   │   │   ├── Settings.tsx               <-- Nastavení salonu a booking systému
+│   │   │   └── index.tsx                  <-- Hlavní wrapper pro admin booking modul
+│   │   └── public/                        <-- Komponenty pro veřejnou rezervační část
+│   │       ├── BookingWizard.tsx          <-- Hlavní vícekrokový průvodce rezervací
+│   │       ├── steps/                     <-- Jednotlivé kroky rezervačního průvodce
+│   │       │   ├── Step1_SelectServices.tsx
+│   │       │   ├── Step2_SelectEmployee.tsx
+│   │       │   ├── Step3_SelectDateTime.tsx
+│   │       │   ├── Step4_ContactDetails.tsx
+│   │       │   ├── Step5_ReviewAndConfirm.tsx
+│   │       │   ├── Step6_Payment.tsx      <-- Volitelný krok pro platbu zálohy/celé ceny
+│   │       │   └── Step7_Confirmation.tsx <-- Finální potvrzení
+│   │       ├── common/                    <-- Sdílené UI komponenty pro veřejnou část
+│   │       │   ├── ServiceCard.tsx
+│   │       │   ├── EmployeeCard.tsx
+│   │       │   ├── CalendarPicker.tsx
+│   │       │   └── ProgressBar.tsx
+│   │       └── hooks/                     <-- React hooky pro booking logiku (např. useBookingState)
+│   ├── ui/                                <-- Obecné UI komponenty CMS, které může Booking využít
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   └── Modal.tsx
+│   └── admin/                             <-- Existující komponenty Admin Panelu CMS
+│       └── Sidebar/
+│           └── Sidebar.tsx                <-- Zde se přidají odkazy na booking
+│
+├── pages/                                 <-- Next.js stránky (router)
+│   ├── api/
+│   │   └── booking/                       <-- API Routes specifické pro booking systém
+│   │       ├── employees.ts               <-- GET (všichni), POST (vytvořit)
+│   │       ├── employees/[id].ts          <-- GET (jeden), PUT (edit), DELETE (smazat)
+│   │       ├── employees/[id]/availability.ts <-- GET (dostupné sloty pro kadeřníka)
+│   │       ├── services.ts                <-- GET (všechny), POST (vytvořit)
+│   │       ├── services/[id].ts           <-- GET (jeden), PUT (edit), DELETE (smazat)
+│   │       ├── categories.ts              <-- GET (všechny), POST (vytvořit)
+│   │       ├── categories/[id].ts         <-- GET (jeden), PUT (edit), DELETE (smazat)
+│   │       ├── reservations.ts            <-- GET (všechny), POST (vytvořit novou)
+│   │       ├── reservations/[id].ts       <-- GET (jeden), PUT (edit), DELETE (smazat)
+│   │       ├── customers.ts               <-- GET (všichni), POST (vytvořit)
+│   │       ├── customers/[id].ts          <-- GET (jeden), PUT (edit), DELETE (smazat)
+│   │       ├── settings.ts                <-- GET (nastavení salonu), PUT (edit)
+│   │       ├── auth/                      <-- API pro autentizaci zákazníků (pokud se liší od admin auth)
+│   │       │   ├── login.ts
+│   │       │   └── register.ts
+│   │       └── payments/                  <-- API pro integraci platební brány
+│   │           └── create-payment-intent.ts
+│   ├── admin/                             <-- Admin stránky Fusion CMS
+│   │   └── provozovna/                    <-- Nový adresář pro stránky provozovny
+│   │       ├── kalendar.tsx               <-- Stránka pro Dashboard (components/BookingSystem/admin/Dashboard.tsx)
+│   │       ├── rezervace.tsx              <-- Stránka pro Správu rezervací
+│   │       ├── sluzby.tsx                 <-- Stránka pro Správu služeb
+│   │       ├── pracovnici.tsx             <-- Stránka pro Správu pracovníků
+│   │       ├── kategorie-sluzeb.tsx       <-- Stránka pro Správu kategorií
+│   │       ├── zakaznici.tsx              <-- Stránka pro Správu zákazníků
+│   │       ├── reporty.tsx                <-- Stránka pro Reporty
+│   │       └── nastaveni.tsx              <-- Stránka pro Nastavení
+│   ├── account/                           <-- Veřejné zákaznické stránky
+│   │   ├── login.tsx                      <-- Přihlášení zákazníka
+│   │   ├── register.tsx                   <-- Registrace zákazníka
+│   │   └── my-reservations.tsx            <-- Zákaznický profil s jeho rezervacemi
+│   └── book-appointment.tsx               <-- Veřejná stránka s rezervačním průvodcem (components/BookingSystem/public/BookingWizard.tsx)
+│
+├── lib/                                   <-- Pomocné funkce a utility (server-side)
+│   ├── db.ts                              <-- Konfigurace a funkce pro práci s databází
+│   ├── auth.ts                            <-- Autentizační logiky (např. NextAuth.js konfigurace)
+│   └── sms-gateway.ts                     <-- Funkce pro komunikaci s externí SMS bránou
+│   └── email-sender.ts                    <-- Funkce pro odesílání e-mailů (potvrzení, připomenutí)
+│
+├── models/                                <-- Databázové modely (např. Mongoose schémata, Prisma schémata)
+│   ├── Employee.ts
+│   ├── Service.ts
+│   ├── Customer.ts
+│   ├── Reservation.ts
+│   └── SalonSettings.ts
+│
+├── types/                                 <-- TypeScript definice typů a rozhraní
+│   └── booking.d.ts                       <-- Všechny IEmployee, IService, IReservation atd.
+│   └── next-auth.d.ts                     <-- Rozšíření typů pro NextAuth.js session (např. user.role)
+│
+├── public/                                <-- Statické soubory
+│   └── images/
+│       ├── employee_profile_pics/
+│       └── salon_gallery/
+│
+├── styles/                                <-- Globální styly, Tailwind CSS konfigurace
+│   └── tailwind.config.js
+│   └── globals.css
+│
+├── README.md
+├── package.json
+├── tsconfig.json
+├── next.config.js
+└── ...
+
+
+
+[BOOKING WIZARD - SALON ZUZA]
+└── Krok 1: Výběr služeb (Jaké bude Vaše přání?)
+    ├── Dynamický souhrn (viditelný po celou dobu výběru)
+    │   ├── Celková odhadovaná doba: [AUTOMATICKY SE SČÍTÁ]
+    │   └── Vybrané služby: [SEZNAM VYBRANÝCH SLUŽEB]
+    ├── Kategorie: Dámské kadeřnictví
+    │   ├── [ ] Střih (60 min)
+    │   ├── [ ] Foukaná (45 min)
+    │   ├── [ ] Olaplex (30 min)
+    │   ├── Rozbalovací sekce: Barvení
+    │   │   └── [ ] Barva / přeliv (120 min)
+    │   └── Rozbalovací sekce: Zesvětlování
+    │       ├── [ ] Melír (180 min)
+    │       └── [ ] Balayage / Fraylights (210 min)
+    ├── Kategorie: Účesy
+    │   ├── [ ] Společenský účes (90 min)
+    │   └── [ ] Svatební účes (120 min)
+    ├── Kategorie: Pánské kadeřnictví
+    │   ├── [ ] Pánský střih (45 min)
+    │   ├── [ ] Střih strojkem (20 min)
+    │   └── [ ] Úprava vousů (20 min)
+    └── Kategorie: Kosmetika
+        ├── [ ] Rituál krásy Sothys (90 min)
+        └── [ ] Rituál pro muže Sothys (60 min)
+
+└── Krok 2: Výběr stylisty (Kdo se o Vás postará?)
+    ├── [Možnost 1] Výběr konkrétního stylisty (zobrazeni pouze ti, kteří provádějí VŠECHNY vybrané služby)
+    │   ├── Karta: Zuzana
+    │   │   ├── Úroveň: TOP STYLIST
+    │   │   └── Odhadovaná cena "od": [SOUČET CEN Z KROKU 1 PRO TOP STYLISTA]
+    │   │       ├── Střih: 1650 Kč
+    │   │       ├── Foukaná: 950 Kč
+    │   │       ├── Barva: od 2450 Kč
+    │   │       ├── Melír: od 3200 Kč
+    │   │       ├── Balayage: od 4200 Kč
+    │   │       ├── Společenský účes: od 1600 Kč
+    │   │       ├── Pánský střih: 950 Kč
+    │   │       ├── ... atd.
+    │   ├── Karta: Denisa
+    │   │   ├── Úroveň: TOP STYLIST
+    │   │   └── Odhadovaná cena "od": [SOUČET CEN Z KROKU 1 PRO TOP STYLISTA]
+    │   │       ├── (Stejné ceny jako Zuzana)
+    │   └── Karta: Natálie
+    │       ├── Úroveň: STYLIST
+    │       └── Odhadovaná cena "od": [SOUČET CEN Z KROKU 1 PRO STYLISTA]
+    │           ├── Střih: 1450 Kč
+    │           ├── Foukaná: 850 Kč
+    │           ├── Barva: od 2250 Kč
+    │           ├── Melír: od 2800 Kč
+    │           ├── Balayage: od 3800 Kč
+    │           ├── Společenský účes: od 1400 Kč
+    │           ├── Pánský střih: 850 Kč
+    │           ├── ... atd.
+    └── [Možnost 2] Výběr "Nezáleží mi / První volný termín"
+
+└── Krok 3: Výběr data a času (Kdy se můžeme těšit?)
+    └── Interaktivní kalendář
+        ├── Zobrazení dostupnosti pro vybraného stylistu (nebo pro všechny, pokud "Nezáleží mi")
+        ├── [Dostupné časové sloty] (Vypočítané na základě celkové délky služeb)
+        └── [Nedostupné / Obsazené časové sloty]
+
+└── Krok 4: Kontaktní údaje
+    ├── Formulář
+    │   ├── Jméno (povinné)
+    │   ├── Příjmení (povinné)
+    │   ├── E-mail (povinné)
+    │   ├── Telefonní číslo (povinné)
+    │   └── Poznámka pro salon (volitelné)
+    ├── Možnost: [Přihlásit se] / [Zaregistrovat se] (automaticky vyplní údaje)
+    └── Checkbox (povinný)
+        └── [ ] Souhlasím se zpracováním osobních údajů a se storno podmínkami salonu.
+
+└── Krok 5: Souhrn a kontrola
+    └── Přehled rezervace
+        ├── Služby: [Seznam vybraných služeb]
+        ├── Celková odhadovaná doba: [Celková doba]
+        ├── Stylista: [Jméno vybraného stylisty]
+        ├── Datum a čas: [Datum a čas z kroku 3]
+        ├── Odhadovaná cena "od": [Finální odhadovaná cena]
+        ├── Vaše údaje: [Jméno, Příjmení, E-mail, Telefon]
+        ├── Poznámka: [Text poznámky]
+        └── Důležité upozornění:
+            └── "Při zrušení termínu méně než 24 hodin předem, Vám bude účtován poplatek ve výši 50 % z ceny služby."
+
+└── Krok 6: (Volitelně) Platba zálohy / Dárkový poukaz
+    ├── Pole pro zadání kódu: [Zadat kód dárkového poukazu]
+    └── Možnost platby zálohy
+        └── [Zaplatit zálohu kartou online]
+
+└── Krok 7: Potvrzení rezervace
+    ├── Zpráva: "Děkujeme, Vaše rezervace byla úspěšně vytvořena!"
+    ├── Souhrn potvrzené rezervace
+    ├── Informace: "Potvrzení s detaily jsme Vám zaslali na Váš e-mail a jako SMS."
+    └── Další akce
+        ├── [Tlačítko: Přidat do Google Kalendáře]
+        ├── [Tlačítko: Přidat do Apple Kalendáře]
+        └── [Tlačítko: Zobrazit mé rezervace]
+
+---
+[ZÁKAZNICKÝ PROFIL (po přihlášení)]
+└── Moje rezervace
+    ├── Sekce: Nadcházející rezervace
+    │   └── Rezervace [ID]
+    │       ├── Detaily: [Služby, Stylista, Datum, Čas, Cena]
+    │       ├── [Tlačítko: Změnit termín] (vrátí na Krok 3 s předvyplněnými údaji)
+    │       └── [Tlačítko: Zrušit rezervaci]
+    │           └── Potvrzovací dialog s upozorněním na storno podmínky, pokud je < 24h do termínu.
+    └── Sekce: Historie rezervací
+        └── Seznam minulých návštěv
+
+[ADMIN PANEL - PROVOZOVNA (přístup po přihlášení do Fusion CMS)]
+
+└── Kalendář (Hlavní přehled / Dashboard)
+├── Ovládací prvky zobrazení
+│ ├── [Tlačítko: Dnes]
+│ ├── [Šipky: Předchozí / Následující]
+│ ├── [Dropdown: Zobrazit den / Zobrazit týden / Zobrazit měsíc]
+│ └── [Dropdown filtr: Zobrazit všechny / Zuzana / Denisa / Natálie]
+└── Mřížka kalendáře
+├── Sloupce reprezentující dny (v týdenním pohledu) nebo stylisty (v denním pohledu)
+├── [Blok rezervace]
+│ ├── Jméno zákazníka: [Jméno Příjmení]
+│ ├── Služby: [Název služby, ...]
+│ ├── Čas: [HH:MM - HH:MM]
+│ └── Status: [Barevně odlišeno: Potvrzeno / Dokončeno / Zrušeno / Nezobrazeno]
+├── Interakce s blokem rezervace (po kliknutí se otevře detail)
+│ ├── [Detail rezervace - modální okno]
+│ │ ├── Všechny informace o rezervaci
+│ │ ├── [Tlačítko: Upravit rezervaci]
+│ │ ├── [Tlačítko: Zrušit rezervaci]
+│ │ └── [Tlačítko: Označit jako dokončeno / zaplaceno]
+└── Interakce s prázdným místem v kalendáři (po kliknutí)
+└── [Formulář: Vytvořit novou rezervaci] (pro telefonické objednávky)
+
+└── Rezervace (Seznamový pohled)
+├── Filtry a vyhledávání
+│ ├── [Vyhledávací pole: Hledat podle jména, telefonu, e-mailu zákazníka]
+│ ├── [Filtr data: Od - Do]
+│ ├── [Filtr stylisty: Všichni / Zuzana / Denisa / Natálie]
+│ └── [Filtr statusu: Všechny / Potvrzené / Dokončené / Zrušené]
+└── Tabulka rezervací
+├── Řádek rezervace
+│ ├── ID: [#12345]
+│ ├── Zákazník: [Jméno Příjmení]
+│ ├── Stylista: [Jméno stylisty]
+│ ├── Služby: [Seznam služeb]
+│ ├── Datum a čas: [DD.MM.YYYY HH:MM]
+│ ├── Cena "od": [XXXX Kč]
+│ ├── Status: [Potvrzeno]
+│ └── Akce: [[Tlačítko: Detail] [Tlačítko: Upravit] [Tlačítko: Zrušit]]
+└── [Tlačítko: Přidat novou rezervaci]
+
+└── Služby (Správa nabízených služeb)
+└── Tabulka služeb
+├── Řádek služby
+│ ├── Název: [Střih]
+│ ├── Kategorie: [Dámské kadeřnictví]
+│ ├── Doba trvání: [60 min]
+│ ├── Ceny: [Stylist: 1450 Kč / Top Stylist: 1650 Kč]
+│ └── Akce: [[Tlačítko: Upravit] [Tlačítko: Smazat]]
+└── [Tlačítko: Přidat novou službu]
+└── [Formulář pro přidání/úpravu služby]
+├── Název služby (textové pole)
+├── Popis (textové pole)
+├── Přiřadit ke kategorii (dropdown)
+├── Odhadovaná doba trvání v minutách (číselné pole)
+├── Cena - TOP STYLIST (číselné pole)
+├── Cena - STYLIST (číselné pole)
+├── Cena - JUNIOR STYLIST (číselné pole, pro budoucí použití)
+└── [Uložit]
+
+└── Pracovníci (Správa týmu)
+└── Seznam pracovníků (zobrazeno jako karty)
+├── Karta pracovníka
+│ ├── Foto, Jméno, Úroveň (TOP STYLIST)
+│ └── Akce: [[Tlačítko: Upravit] [Tlačítko: Deaktivovat]]
+└── [Tlačítko: Přidat nového pracovníka]
+└── [Formulář pro přidání/úpravu pracovníka]
+├── Jméno, Příjmení, E-mail, Telefon (textová pole)
+├── Nahrát fotografii (input pro soubor)
+├── Úroveň (dropdown: TOP STYLIST / STYLIST / JUNIOR STYLIST)
+├── Sekce: Pracovní doba
+│ ├── [ ] Pondělí: od [HH:MM] do [HH:MM]
+│ ├── [ ] Úterý: od [HH:MM] do [HH:MM]
+│ ├── ... atd. pro celý týden
+└── Sekce: Plánovaná dovolená / Volno
+└── [Kalendář pro výběr konkrétních dnů, které se mají zablokovat]
+└── [Uložit]
+
+└── Kategorie služeb
+└── Seznam kategorií
+├── Řádek kategorie
+│ ├── Název: [Dámské kadeřnictví]
+│ └── Akce: [[Tlačítko: Upravit] [Tlačítko: Smazat]]
+└── [Tlačítko: Přidat novou kategorii]
+└── [Formulář: Název kategorie]
+
+└── Zákazníci (CRM)
+└── Tabulka zákazníků
+├── Řádek zákazníka
+│ ├── Jméno: [Jméno Příjmení]
+│ ├── Kontakt: [email@email.cz, +420 123 456 789]
+│ ├── Počet rezervací: [X]
+│ ├── Poslední návštěva: [DD.MM.YYYY]
+│ └── Akce: [[Tlačítko: Zobrazit detail]]
+└── Po kliknutí na detail zákazníka
+├── Kontaktní údaje
+├── Historie rezervací (seznam všech minulých i budoucích)
+└── Poznámky administrátora (textové pole pro interní poznámky k zákazníkovi)
+
+└── Reporty
+├── Filtr pro výběr období: [Od - Do]
+├── Report 1: Tržby
+│ ├── Celkové tržby (odhadované)
+│ ├── Tržby podle stylistů
+│ └── Tržby podle služeb
+├── Report 2: Vytíženost
+│ ├── Celková obsazenost salonu v %
+│ └── Obsazenost jednotlivých stylistů v %
+└── Report 3: Výkon služeb
+├── Nejoblíbenější služby (podle počtu rezervací)
+└── Nejvýnosnější služby (podle tržeb)
+
+└── Nastavení
+├── Sekce: Provozovna
+│ ├── Název salonu, Adresa, IČO, Telefon, E-mail
+├── Sekce: Provozní doba
+│ ├── Pondělí - Pátek: od [08:00] do [20:00]
+│ └── Sobota: od [08:00] do [14:00]
+├── Sekce: Storno podmínky
+│ └── Textové pole pro úpravu textu storno podmínek
+├── Sekce: Notifikace
+│ ├── [ ] Aktivovat e-mailová připomenutí (24h předem)
+│ ├── [ ] Aktivovat SMS připomenutí (24h předem)
+│ ├── Šablona e-mailu (textové pole s proměnnými)
+│ └── Šablona SMS (textové pole s proměnnými)
+└── Sekce: Dárkové poukazy
+├── [Tlačítko: Generovat nový poukaz]
+└── Tabulka poukazů (Kód, Hodnota, Platnost, Stav)
+
+
+ DATABÁZE
+Mongoose vs Prisma? (instrukce říkají "nebo") - Který framework použít?
+Existuje už nějaká MongoDB konfiguraci v projektu?
+Connection string / konfigurace?
+🔐 AUTENTIZACE
+Jak funguje existující admin autentizace? (JWT, NextAuth, cookies?)
+Chceš NextAuth.js pro customer auth, nebo jiné řešení?
+Měl by customer účet vyžadovat email verifikaci?
+💳 PLATBY A NOTIFIKACE
+Jakou platební bránu pro zálohu? (Stripe, Square, PayU, Čeština specificky?)
+Jakou SMS službu? (Twilio, GoSMS, SMPP, local SMS provider?)
+Jakou email službu? (Resend, SendGrid, lokální SMTP?)
+SMS / Email jsou opravdu povinné, nebo volitelné?
+👥 SALON KONFIGURACE
+Kolik stylisti/zaměstnanců bude v systému? (Jen 3 z příkladu, nebo víc?)
+Jaké úrovně stylisti? (Jen TOP_STYLIST a STYLIST, nebo i JUNIOR_STYLIST?)
+Jaké jsou konkrétní ceny za jednotlivé služby a úrovně?
+Jaká je default pracovní doba? (8:00-20:00 všechny dny?)
+Jsou určité dny zavřeno? (Neděle? Svátek?)
+🔧 TECHNICKÉ DETAILY
+Máme existující Prisma schéma nebo od nuly?
+Jaké environment variables existují? (.env konfiguraci?)
+Bude API v /pages/api/ nebo v App Router (api)?
+Jak se budou generovat UUID/ID u MongoDB? (Mongoose ObjectId?)
+📋 BUSINESS LOGIKA
+Je storno 24h dopředu fixní, nebo si admin může nastavit?
+Chceš dárkové poukazy? (Jsou v UI, ale je to kritické?)
+Bude admin slot pro telefonické objednávky vyžadován hned, nebo později?
+Ical/Calendar integrace (Google Calendar, Apple Calendar export)?
+🗂️ STRUKTURA PROJEKTU
+Kde jsou existující API routes pro admin? (K nastudování architektury)
+Existuje auth middleware, který si mohu použít?
+Priorita: Odpověz prosím alespoň na otázky 5, 8, 9, 11-14, 18 - ty jsou kritické pro start vývoje. Zbytek si mohu odvodit nebo použít rozumné defaults.
+

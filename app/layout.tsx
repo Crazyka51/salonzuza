@@ -1,13 +1,18 @@
 import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
+import { Montserrat } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
+const montserrat = Montserrat({ 
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-montserrat'
+})
+
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: 'Salon Zuza - Moderní kadeřnictví v Brně',
+  description: 'Profesionální kadeřnictví v Brně. Střihy, barvy, účesy pro ženy. Online rezervace termínů.',
+  generator: 'Next.js',
 }
 
 export default function RootLayout({
@@ -16,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="cs">
+      <body className={`${montserrat.variable} font-sans antialiased bg-white text-[#212121]`}>
         {children}
         <Analytics />
       </body>
