@@ -1,3 +1,5 @@
+'use client'
+
 // Stránka kontaktu podle skutečného webu
 import { Navbar } from '@/components/salon/Navbar'
 import { Footer } from '@/components/salon/Footer'

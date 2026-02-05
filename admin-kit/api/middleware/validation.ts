@@ -87,7 +87,7 @@ export const globalRateLimiter = new RateLimiter(60000, 100) // 100 requests per
 
 // Rate limiting middleware
 export function rateLimitMiddleware(request: NextRequest): NextResponse | null {
-  const identifier = request.ip || request.headers.get("x-forwarded-for") || "anonymous"
+  const identifier = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "anonymous"
 
   if (!globalRateLimiter.isAllowed(identifier)) {
     return NextResponse.json(

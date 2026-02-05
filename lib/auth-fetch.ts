@@ -20,7 +20,7 @@ export async function authorizedFetch<T = any>(
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('auth-token')?.value;
 
     const headers = new Headers(options.headers);

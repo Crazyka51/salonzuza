@@ -60,13 +60,17 @@ Přeliv – Jemné tónování pro osvěžení a sjednocení barvy.`, typ: 'text
 
   for (const item of obsah) {
     await prisma.obsahStranky.upsert({
-      where: { klic: item.klic },
+      where: { klicObsahu: item.klic },
       update: {
-        hodnota: item.hodnota,
+        obsah: item.hodnota,
         updatedAt: new Date()
       },
       create: {
-        ...item,
+        klicObsahu: item.klic,
+        obsah: item.hodnota,
+        typ: item.typ,
+        kategorie: item.stranka,
+        popis: item.popis,
         createdAt: new Date(),
         updatedAt: new Date()
       }
