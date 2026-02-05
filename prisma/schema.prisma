@@ -50,10 +50,10 @@ model Sluzba {
   kategorie          KategorieSluzeb  @relation(fields: [kategorieId], references: [id])
   dobaTrvaniMinuty   Int              @map("doba_trvani_minuty")
   
-  // Ceny podle úrovně stylisty (JSON)
+  // Ceny podle úrovně stylisty
   cenaTopStylist     Int              @map("cena_top_stylist")
   cenaStylist        Int              @map("cena_stylist")
-  cenaJuniorStylist  Int?             @map("cena_junior_stylist")
+  cenaJuniorStylist  Int              @map("cena_junior_stylist")
   
   jeAktivni          Boolean          @default(true) @map("je_aktivni")
   createdAt          DateTime         @default(now()) @map("created_at")
