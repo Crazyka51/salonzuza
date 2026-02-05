@@ -1,8 +1,39 @@
+'use client'
+
 // Stránka ceníku podle skutečného webu
 import { Navbar } from '@/components/salon/Navbar'
 import { Footer } from '@/components/salon/Footer'
+import { useEffect, useState } from 'react'
+
+interface Sluzba {
+  id: number
+  nazev: string
+  cenaTopStylist: number
+  dobaTrvaniMinuty: number
+}
+
+interface Kategorie {
+  id: number
+  nazev: string
+  popis: string | null
+  sluzby: Sluzba[]
+}
 
 export default function CenikPage() {
+  const [kategorie, setKategorie] = useState<Kategorie[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/cenik')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setKategorie(data.data)
+        }
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [])
   return (
     <main className="min-h-screen">
       <Navbar />
@@ -23,169 +54,33 @@ export default function CenikPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           
-          {/* Dámské kadeřnictví */}
-          <div className="mb-12 bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="bg-[#B8A876] text-white p-6">
-              <h2 className="text-2xl font-bold">Dámské kadeřnictví</h2>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#B8A876] mx-auto"></div>
+              <p className="mt-4 text-gray-600">Načítání ceníku...</p>
             </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Mytí + foukaná</span>
-                    <span className="font-semibold">450 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Střih + mytí + foukaná</span>
-                    <span className="font-semibold">650 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Střih + barvení + foukaná</span>
-                    <span className="font-semibold">1200 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Melírování + tónování</span>
-                    <span className="font-semibold">1400 Kč</span>
-                  </div>
+          ) : (
+            kategorie.map(kat => (
+              <div key={kat.id} className="mb-12 bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="bg-[#B8A876] text-white p-6">
+                  <h2 className="text-2xl font-bold">{kat.nazev}</h2>
+                  {kat.popis && <p className="text-sm opacity-90 mt-1">{kat.popis}</p>}
                 </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Svatební účes</span>
-                    <span className="font-semibold">800 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Společenský účes</span>
-                    <span className="font-semibold">600 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Úprava obočí</span>
-                    <span className="font-semibold">200 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Keratinová kúra</span>
-                    <span className="font-semibold">2500 Kč</span>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {kat.sluzby.map(sluzba => (
+                      <div key={sluzba.id} className="space-y-3">
+                        <div className="flex justify-between border-b pb-2">
+                          <span>{sluzba.nazev}</span>
+                          <span className="font-semibold">{sluzba.cenaTopStylist} Kč</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Pánské kadeřnictví */}
-          <div className="mb-12 bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="bg-[#B8A876] text-white p-6">
-              <h2 className="text-2xl font-bold">Pánské kadeřnictví</h2>
-            </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Mytí + střih + foukaná</span>
-                    <span className="font-semibold">450 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Klasický střih</span>
-                    <span className="font-semibold">350 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Moderní střih</span>
-                    <span className="font-semibold">400 Kč</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Úprava vousů</span>
-                    <span className="font-semibold">200 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Oholení</span>
-                    <span className="font-semibold">250 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Kompletní služba</span>
-                    <span className="font-semibold">600 Kč</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Barvení */}
-          <div className="mb-12 bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="bg-[#B8A876] text-white p-6">
-              <h2 className="text-2xl font-bold">Barvení vlasů</h2>
-            </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Celobarvení krátké vlasy</span>
-                    <span className="font-semibold">800 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Celobarvení dlouhé vlasy</span>
-                    <span className="font-semibold">1200 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Melírování částečné</span>
-                    <span className="font-semibold">900 Kč</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Melírování kompletní</span>
-                    <span className="font-semibold">1400 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Balayage</span>
-                    <span className="font-semibold">1600 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Tónování</span>
-                    <span className="font-semibold">400 Kč</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Kosmetika */}
-          <div className="mb-12 bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="bg-[#B8A876] text-white p-6">
-              <h2 className="text-2xl font-bold">Kosmetické služby</h2>
-            </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Základní ošetření pleti</span>
-                    <span className="font-semibold">600 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Hloubkové čištění</span>
-                    <span className="font-semibold">800 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Hydratační ošetření</span>
-                    <span className="font-semibold">700 Kč</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Anti-age ošetření</span>
-                    <span className="font-semibold">900 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Úprava a barvení obočí</span>
-                    <span className="font-semibold">300 Kč</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-2">
-                    <span>Úprava řas</span>
-                    <span className="font-semibold">250 Kč</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            ))
+          )}
 
         </div>
       </section>
@@ -213,9 +108,9 @@ export default function CenikPage() {
           <p className="text-lg text-[#555555] mb-8">
             Využijte naši online rezervaci nebo nás kontaktujte přímo
           </p>
-          <button className="bg-[#B8A876] hover:bg-[#A39566] text-white font-bold py-3 px-8 transition-colors">
+          <a href="/online-rezervace" className="inline-block bg-[#B8A876] hover:bg-[#A39566] text-white font-bold py-3 px-8 transition-colors">
             REZERVOVAT ONLINE
-          </button>
+          </a>
         </div>
       </section>
 
