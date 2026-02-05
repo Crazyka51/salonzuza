@@ -1,17 +1,12 @@
 // API endpoint pro správu obsahu stránek v adminu
 import { NextRequest, NextResponse } from 'next/server'
 import { ObsahStrankyModel } from '@/models/ObsahStrankyModel'
-import { IObsahStranky } from '@/types/booking'
 
 export const dynamic = 'force-dynamic'
 
 // GET - získat obsah pro admin
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Přidat admin autentizaci
-    // const session = await getAdminSession(request)
-    // if (!session) return NextResponse.json({ uspech: false, chyba: 'Neautorizován' }, { status: 401 })
-
     const { searchParams } = new URL(request.url)
     const stranka = searchParams.get('stranka')
 
@@ -39,19 +34,21 @@ export async function GET(request: NextRequest) {
 // POST - vytvořit nový obsah
 export async function POST(request: NextRequest) {
   try {
-    // TODO: Přidat admin autentizaci
-    
-    const data: Omit<IObsahStranky, '_id' | 'vytvořeno' | 'upraveno'> = await request.json()
+    const data = await request.json()
     
     // Validace
-    if (!data.klic || !data.nazev || !data.hodnota || !data.typ || !data.stranka) {
+    if (!data.klic || !data.hodnota) {
       return NextResponse.json(
-        { uspech: false, chyba: 'Povinná pole: klic, nazev, hodnota, typ, stranka' },
+        { uspech: false, chyba: 'Povinná pole: klic, hodnota' },
         { status: 400 }
       )
     }
 
-    const novyObsah = await ObsahStrankyModel.vytvorit(data)
+    const novyObsah = await ObsahStrankyModel.vytvorit({
+      klic: data.klic,
+      hodnota: data.hodnota,
+      stranka: data.stranka || 'general'
+    })
 
     return NextResponse.json({
       uspech: true,
@@ -71,13 +68,11 @@ export async function POST(request: NextRequest) {
 // PUT - aktualizovat obsah
 export async function PUT(request: NextRequest) {
   try {
-    // TODO: Přidat admin autentizaci
-    
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
     const klic = searchParams.get('klic')
     
-    const data: Partial<IObsahStranky> = await request.json()
+    const data = await request.json()
     
     let aktualizovanyObsah
     
@@ -116,11 +111,9 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// DELETE - smazat obsah (soft delete)
+// DELETE - smazat obsah
 export async function DELETE(request: NextRequest) {
   try {
-    // TODO: Přidat admin autentizaci
-    
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
     
