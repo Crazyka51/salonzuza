@@ -75,7 +75,7 @@ export class SluzbaModel {
           dobaTrvaniMinuty: data.dobaTrvaniMinuty,
           cenaTopStylist: data.cena.top_stylist,
           cenaStylist: data.cena.stylist,
-          cenaJuniorStylist: data.cena.junior_stylist,
+          cenaJuniorStylist: data.cena.junior_stylist ?? 0,
           jeAktivni: data.jeAktivni,
           kategorieId: parseInt(data.kategorieId)
         },
