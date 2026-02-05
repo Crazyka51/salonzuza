@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ObsahStrankyModel } from '@/models/ObsahStrankyModel'
 import { IObsahStranky } from '@/types/booking'
 
+export const dynamic = 'force-dynamic'
+
 // GET - získat obsah pro admin
 export async function GET(request: NextRequest) {
   try {
