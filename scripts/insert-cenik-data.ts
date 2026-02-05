@@ -9,61 +9,53 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🚀 Vkládám ceník do databáze...')
 
-  // Nejprve vytvoříme kategorie
-  const damske = await prisma.kategorieSluzeb.upsert({
-    where: { id: 1 },
-    update: { nazev: 'Dámské kadeřnictví', popis: 'Kompletní péče o dámské vlasy', poradi: 1 },
-    create: { id: 1, nazev: 'Dámské kadeřnictví', popis: 'Kompletní péče o dámské vlasy', poradi: 1 }
-  })
-  console.log('✅ Kategorie: Dámské kadeřnictví')
+  // Nejprve smažeme staré kategorie a služby
+  await prisma.sluzba.deleteMany({})
+  await prisma.kategorieSluzeb.deleteMany({})
+  console.log('🗑️  Smazány staré kategorie a služby')
 
-  const panske = await prisma.kategorieSluzeb.upsert({
-    where: { id: 2 },
-    update: { nazev: 'Pánské kadeřnictví', popis: 'Střihy a úpravy pro pány', poradi: 2 },
-    create: { id: 2, nazev: 'Pánské kadeřnictví', popis: 'Střihy a úpravy pro pány', poradi: 2 }
+  // Vytvoříme nové kategorie podle skutečného ceníku
+  const strih = await prisma.kategorieSluzeb.create({
+    data: { id: 1, nazev: 'STŘIH', popis: 'poradenství, mytí, střih, foukaná a závěrečný styling', poradi: 1 }
   })
-  console.log('✅ Kategorie: Pánské kadeřnictví')
+  console.log('✅ Kategorie: STŘIH')
 
-  const barveni = await prisma.kategorieSluzeb.upsert({
-    where: { id: 3 },
-    update: { nazev: 'Barvení vlasů', popis: 'Profesionální barvení a melíry', poradi: 3 },
-    create: { id: 3, nazev: 'Barvení vlasů', popis: 'Profesionální barvení a melíry', poradi: 3 }
+  const barveni = await prisma.kategorieSluzeb.create({
+    data: { id: 2, nazev: 'BARVENÍ', popis: null, poradi: 2 }
   })
-  console.log('✅ Kategorie: Barvení vlasů')
+  console.log('✅ Kategorie: BARVENÍ')
 
-  const kosmetika = await prisma.kategorieSluzeb.upsert({
-    where: { id: 4 },
-    update: { nazev: 'Kosmetické služby', popis: 'Péče o pleť a obočí', poradi: 4 },
-    create: { id: 4, nazev: 'Kosmetické služby', popis: 'Péče o pleť a obočí', poradi: 4 }
+  const melirovani = await prisma.kategorieSluzeb.create({
+    data: { id: 3, nazev: 'MELÍROVÁNÍ', popis: null, poradi: 3 }
   })
-  console.log('✅ Kategorie: Kosmetické služby')
+  console.log('✅ Kategorie: MELÍROVÁNÍ')
 
-  // Dámské kadeřnictví služby
-  const damskeSluby = [
-    { nazev: 'Mytí + foukaná', cena: 450, dobaTrvani: 45 },
-    { nazev: 'Střih + mytí + foukaná', cena: 650, dobaTrvani: 60 },
-    { nazev: 'Střih + barvení + foukaná', cena: 1200, dobaTrvani: 120 },
-    { nazev: 'Melírování + tónování', cena: 1400, dobaTrvani: 150 },
-    { nazev: 'Svatební účes', cena: 800, dobaTrvani: 90 },
-    { nazev: 'Společenský účes', cena: 600, dobaTrvani: 60 },
-    { nazev: 'Úprava obočí', cena: 200, dobaTrvani: 15 },
-    { nazev: 'Keratinová kúra', cena: 2500, dobaTrvani: 180 }
+  const zesvetlen = await prisma.kategorieSluzeb.create({
+    data: { id: 4, nazev: 'ZESVĚTLOVÁNÍ', popis: null, poradi: 4 }
+  })
+  console.log('✅ Kategorie: ZESVĚTLOVÁNÍ')
+
+  const dalsi = await prisma.kategorieSluzeb.create({
+    data: { id: 5, nazev: 'DALŠÍ SLUŽBY', popis: null, poradi: 5 }
+  })
+  console.log('✅ Kategorie: DALŠÍ SLUŽBY')
+
+  // STŘIH služby
+  const strihSluby = [
+    { nazev: 'Krátké vlasy', cena: 520, dobaTrvani: 60 },
+    { nazev: 'Polodlouhé vlasy', cena: 680, dobaTrvani: 75 },
+    { nazev: 'Dlouhé vlasy', cena: 850, dobaTrvani: 90 },
+    { nazev: 'Extra dlouhé vlasy', cena: 1130, dobaTrvani: 120 },
+    { nazev: 'Pánské střihy', cena: 350, dobaTrvani: 45, popis: '250,- — 450,- Kč' },
+    { nazev: 'Dětské střihy', cena: 220, dobaTrvani: 30 }
   ]
 
-  for (const sluzba of damskeSluby) {
-    await prisma.sluzba.upsert({
-      where: { id: damskeSluby.indexOf(sluzba) + 1 },
-      update: {
+  for (const sluzba of strihSluby) {
+    await prisma.sluzba.create({
+      data: {
         nazev: sluzba.nazev,
-        kategorieId: damske.id,
-        cenaTopStylist: sluzba.cena,
-        cenaStylist: sluzba.cena,
-        cenaJuniorStylist: sluzba.cena,
-        dobaTrvaniMinuty: sluzba.dobaTrvani
-      },
-      create: {
-        nazev: sluzba.nazev,
-        kategorieId: damske.id,
+        popis: sluzba.popis || null,
+        kategorieId: strih.id,
         cenaTopStylist: sluzba.cena,
         cenaStylist: sluzba.cena,
         cenaJuniorStylist: sluzba.cena,
@@ -73,62 +65,19 @@ async function main() {
     console.log(`  ✅ ${sluzba.nazev} - ${sluzba.cena} Kč`)
   }
 
-  // Pánské kadeřnictví služby
-  const panskeSluby = [
-    { nazev: 'Mytí + střih + foukaná', cena: 450, dobaTrvani: 45 },
-    { nazev: 'Klasický střih', cena: 350, dobaTrvani: 30 },
-    { nazev: 'Moderní střih', cena: 400, dobaTrvani: 40 },
-    { nazev: 'Úprava vousů', cena: 200, dobaTrvani: 20 },
-    { nazev: 'Oholení', cena: 250, dobaTrvani: 30 },
-    { nazev: 'Kompletní služba', cena: 600, dobaTrvani: 60 }
-  ]
-
-  for (const sluzba of panskeSluby) {
-    await prisma.sluzba.upsert({
-      where: { id: damskeSluby.length + panskeSluby.indexOf(sluzba) + 1 },
-      update: {
-        nazev: sluzba.nazev,
-        kategorieId: panske.id,
-        cenaTopStylist: sluzba.cena,
-        cenaStylist: sluzba.cena,
-        cenaJuniorStylist: sluzba.cena,
-        dobaTrvaniMinuty: sluzba.dobaTrvani
-      },
-      create: {
-        nazev: sluzba.nazev,
-        kategorieId: panske.id,
-        cenaTopStylist: sluzba.cena,
-        cenaStylist: sluzba.cena,
-        cenaJuniorStylist: sluzba.cena,
-        dobaTrvaniMinuty: sluzba.dobaTrvani
-      }
-    })
-    console.log(`  ✅ ${sluzba.nazev} - ${sluzba.cena} Kč`)
-  }
-
-  // Barvení vlasů služby
+  // BARVENÍ služby
   const barveniSluby = [
-    { nazev: 'Celobarvení krátké vlasy', cena: 800, dobaTrvani: 90 },
-    { nazev: 'Celobarvení dlouhé vlasy', cena: 1200, dobaTrvani: 120 },
-    { nazev: 'Melírování částečné', cena: 900, dobaTrvani: 90 },
-    { nazev: 'Melírování kompletní', cena: 1400, dobaTrvani: 150 },
-    { nazev: 'Balayage', cena: 1600, dobaTrvani: 180 },
-    { nazev: 'Tónování', cena: 400, dobaTrvani: 45 }
+    { nazev: 'Krátké vlasy a odrost', cena: 550, dobaTrvani: 90 },
+    { nazev: 'Polodlouhé vlasy', cena: 760, dobaTrvani: 120 },
+    { nazev: 'Dlouhé vlasy', cena: 940, dobaTrvani: 150 },
+    { nazev: 'Přeliv', cena: 525, dobaTrvani: 60, popis: '350,- — 700,- Kč' }
   ]
 
   for (const sluzba of barveniSluby) {
-    await prisma.sluzba.upsert({
-      where: { id: damskeSluby.length + panskeSluby.length + barveniSluby.indexOf(sluzba) + 1 },
-      update: {
+    await prisma.sluzba.create({
+      data: {
         nazev: sluzba.nazev,
-        kategorieId: barveni.id,
-        cenaTopStylist: sluzba.cena,
-        cenaStylist: sluzba.cena,
-        cenaJuniorStylist: sluzba.cena,
-        dobaTrvaniMinuty: sluzba.dobaTrvani
-      },
-      create: {
-        nazev: sluzba.nazev,
+        popis: sluzba.popis || null,
         kategorieId: barveni.id,
         cenaTopStylist: sluzba.cena,
         cenaStylist: sluzba.cena,
@@ -139,30 +88,62 @@ async function main() {
     console.log(`  ✅ ${sluzba.nazev} - ${sluzba.cena} Kč`)
   }
 
-  // Kosmetické služby
-  const kosmetikaSluby = [
-    { nazev: 'Základní ošetření pleti', cena: 600, dobaTrvani: 60 },
-    { nazev: 'Hloubkové čištění', cena: 800, dobaTrvani: 75 },
-    { nazev: 'Hydratační ošetření', cena: 700, dobaTrvani: 60 },
-    { nazev: 'Anti-age ošetření', cena: 900, dobaTrvani: 90 },
-    { nazev: 'Úprava a barvení obočí', cena: 300, dobaTrvani: 30 },
-    { nazev: 'Úprava řas', cena: 250, dobaTrvani: 20 }
+  // MELÍROVÁNÍ služby
+  const melirovaniSluby = [
+    { nazev: 'Klasický melír', cena: 2350, dobaTrvani: 150, popis: '700,- — 4 000,- Kč' },
+    { nazev: '1 ks folie do účesu (krátká)', cena: 100, dobaTrvani: 15 },
+    { nazev: '1 ks folie do účesu (dlouhá)', cena: 180, dobaTrvani: 20 }
   ]
 
-  for (const sluzba of kosmetikaSluby) {
-    await prisma.sluzba.upsert({
-      where: { id: damskeSluby.length + panskeSluby.length + barveniSluby.length + kosmetikaSluby.indexOf(sluzba) + 1 },
-      update: {
+  for (const sluzba of melirovaniSluby) {
+    await prisma.sluzba.create({
+      data: {
         nazev: sluzba.nazev,
-        kategorieId: kosmetika.id,
+        popis: sluzba.popis || null,
+        kategorieId: melirovani.id,
         cenaTopStylist: sluzba.cena,
         cenaStylist: sluzba.cena,
         cenaJuniorStylist: sluzba.cena,
         dobaTrvaniMinuty: sluzba.dobaTrvani
-      },
-      create: {
+      }
+    })
+    console.log(`  ✅ ${sluzba.nazev} - ${sluzba.cena} Kč`)
+  }
+
+  // ZESVĚTLOVÁNÍ služby
+  const zesvetneniSluby = [
+    { nazev: 'Zesvětlování', cena: 3750, dobaTrvani: 180, popis: '500,- — 7 000,- Kč' },
+    { nazev: 'Ombré, Airouch, Micromelír', cena: 2600, dobaTrvani: 150, popis: '1 200,- — 4 000,- Kč' },
+    { nazev: 'Nadstandardní péče PLEX, PRO-FORCE', cena: 300, dobaTrvani: 30, popis: '250,- — 350,- Kč' }
+  ]
+
+  for (const sluzba of zesvetneniSluby) {
+    await prisma.sluzba.create({
+      data: {
         nazev: sluzba.nazev,
-        kategorieId: kosmetika.id,
+        popis: sluzba.popis || null,
+        kategorieId: zesvetlen.id,
+        cenaTopStylist: sluzba.cena,
+        cenaStylist: sluzba.cena,
+        cenaJuniorStylist: sluzba.cena,
+        dobaTrvaniMinuty: sluzba.dobaTrvani
+      }
+    })
+    console.log(`  ✅ ${sluzba.nazev} - ${sluzba.cena} Kč`)
+  }
+
+  // DALŠÍ SLUŽBY
+  const dalsiSluby = [
+    { nazev: 'Svatební a společenské účesy', cena: 3075, dobaTrvani: 120, popis: '650,- — 5 500,- Kč' },
+    { nazev: 'Ošetření vlasů Smoothing systém', cena: 2400, dobaTrvani: 150, popis: '1 300,- — 3 500,- Kč' }
+  ]
+
+  for (const sluzba of dalsiSluby) {
+    await prisma.sluzba.create({
+      data: {
+        nazev: sluzba.nazev,
+        popis: sluzba.popis || null,
+        kategorieId: dalsi.id,
         cenaTopStylist: sluzba.cena,
         cenaStylist: sluzba.cena,
         cenaJuniorStylist: sluzba.cena,

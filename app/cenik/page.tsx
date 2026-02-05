@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 interface Sluzba {
   id: number
   nazev: string
+  popis: string | null
   cenaTopStylist: number
   dobaTrvaniMinuty: number
 }
@@ -67,13 +68,16 @@ export default function CenikPage() {
                   {kat.popis && <p className="text-sm opacity-90 mt-1">{kat.popis}</p>}
                 </div>
                 <div className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
                     {kat.sluzby.map(sluzba => (
-                      <div key={sluzba.id} className="space-y-3">
-                        <div className="flex justify-between border-b pb-2">
-                          <span>{sluzba.nazev}</span>
-                          <span className="font-semibold">{sluzba.cenaTopStylist} Kč</span>
-                        </div>
+                      <div key={sluzba.id} className="flex justify-between border-b pb-2">
+                        <span>{sluzba.nazev}</span>
+                        <span className="font-semibold">
+                          {sluzba.popis && sluzba.popis.includes('—') 
+                            ? sluzba.popis 
+                            : `${sluzba.cenaTopStylist},- Kč`
+                          }
+                        </span>
                       </div>
                     ))}
                   </div>
