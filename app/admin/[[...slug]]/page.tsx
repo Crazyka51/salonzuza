@@ -12,21 +12,17 @@ export async function generateMetadata({ params }: { params: { slug?: string[] }
   
   const pageNames: Record<string, string> = {
     dashboard: "Přehled",
-    prehled: "Přehled",
-    articles: "Články",
-    users: "Uživatelé",
-    categories: "Kategorie",
-    media: "Média",
-    settings: "Nastavení",
-    analytics: "Analýzy",
-    comments: "Komentáře",
-    newsletter: "Newsletter",
+    prehled: "Přehled", 
+    "editor-obsahu": "Editor obsahu",
+    content: "Editor obsahu",
+    statistiky: "Statistiky",
+    analytics: "Statistiky",
   }
 
   const czechPageName = pageNames[pageName] || pageName.charAt(0).toUpperCase() + pageName.slice(1)
 
   return {
-    title: `${czechPageName} - Administrace`,
-    description: `Administrační panel - ${czechPageName}`,
+    title: `${czechPageName} - Salon Zuza Administrace`,
+    description: `Administrační panel Salon Zuza - ${czechPageName}`,
   }
 }

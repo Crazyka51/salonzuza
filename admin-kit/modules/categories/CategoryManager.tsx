@@ -217,7 +217,7 @@ export function CategoryManager() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Tag className="h-8 w-8 text-[oklch(0.60_0.12_160)]" />
+            <Tag className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
             Kategorie
           </h1>
           <p className="text-muted-foreground mt-1">Správa kategorií pro články</p>
@@ -257,7 +257,7 @@ export function CategoryManager() {
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDelete(category.id)}
-                    className="h-8 w-8 hover:text-[oklch(0.50_0.18_25)] hover:bg-[oklch(0.50_0.18_25)]/10"
+                    className="h-8 w-8 hover:text-red-600 hover:bg-red-100 dark:hover:text-red-400 dark:hover:bg-red-950"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

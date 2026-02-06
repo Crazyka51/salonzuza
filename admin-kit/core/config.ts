@@ -1,83 +1,32 @@
 import type { AdminConfig } from "./types"
 
-// Default configuration for the admin-kit system
+// Default configuration for the Salon Zuza admin system
 export const defaultAdminConfig: AdminConfig = {
-  title: "CMS Admin Panel",
+  title: "Salon Zuza - Administrace",
   theme: "system",
   navigation: [
     {
       id: "dashboard",
-      label: "Dashboard",
+      label: "Přehled",
       href: "/admin",
       icon: "Home",
     },
     {
-      id: "articles",
-      label: "Správa článků",
-      href: "/admin/articles",
+      id: "content",
+      label: "Editor obsahu",
+      href: "/admin/editor-obsahu",
       icon: "FileText",
-      permission: "articles.read",
-    },
-    {
-      id: "categories",
-      label: "Správa kategorií",
-      href: "/admin/categories",
-      icon: "Folder",
-      permission: "categories.read",
-    },
-    {
-      id: "media",
-      label: "Správa médií",
-      href: "/admin/media",
-      icon: "Image",
-      permission: "media.read",
     },
     {
       id: "analytics",
-      label: "Analytika",
-      href: "/admin/analytics",
+      label: "Statistiky",
+      href: "/admin/statistiky",
       icon: "BarChart3",
-      permission: "analytics.read",
-    },
-    {
-      id: "newsletter",
-      label: "Newsletter",
-      href: "/admin/newsletter",
-      icon: "Mail",
-      permission: "newsletter.read",
-    },
-    {
-      id: "backups",
-      label: "Zálohy",
-      href: "/admin/backups",
-      icon: "Database",
-      permission: "backups.read",
-    },
-    {
-      id: "diagnostics",
-      label: "Diagnostika",
-      href: "/admin/diagnostics",
-      icon: "Activity",
-      permission: "diagnostics.read",
-    },
-    {
-      id: "users",
-      label: "Uživatelé",
-      href: "/admin/users",
-      icon: "Users",
-      permission: "users.read",
-    },
-    {
-      id: "settings",
-      label: "Nastavení",
-      href: "/admin/settings",
-      icon: "Settings",
-      permission: "settings.read",
     },
   ],
   modules: [],
   auth: {
-    provider: "jwt", // Updated default provider to JWT
+    provider: "jwt",
     loginPath: "/admin/login",
     redirectAfterLogin: "/admin",
     permissions: true,

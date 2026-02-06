@@ -195,7 +195,7 @@ export default function MediaManager({ onSelectMedia }: MediaManagerProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
-            <ImageIcon className="h-8 w-8 text-[oklch(0.55_0.15_264)]" />
+            <ImageIcon className="h-8 w-8 text-purple-600 dark:text-purple-400" />
             Správa médií
           </h1>
           <p className="text-muted-foreground">Nahrajte a spravujte obrázky a soubory</p>
@@ -263,7 +263,7 @@ export default function MediaManager({ onSelectMedia }: MediaManagerProps) {
               
               {loading ? (
                 <div className="flex items-center justify-center p-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-[oklch(0.55_0.15_264)]" />
+                  <Loader2 className="h-8 w-8 animate-spin text-purple-600 dark:text-purple-400" />
                 </div>
               ) : filteredMediaFiles.length === 0 ? (
                 <div className="text-center p-12 bg-secondary rounded-lg border border-border">
@@ -320,7 +320,7 @@ export default function MediaManager({ onSelectMedia }: MediaManagerProps) {
               <Card className="bg-secondary border-border">
                 <CardContent className="p-8">
                   <div className="border-2 border-dashed border-border rounded-lg p-12 text-center hover:border-accent transition-colors">
-                    <UploadIcon className="h-16 w-16 mx-auto mb-4 text-[oklch(0.55_0.15_264)]" />
+                    <UploadIcon className="h-16 w-16 mx-auto mb-4 text-purple-600 dark:text-purple-400" />
                     <h3 className="text-lg font-semibold mb-2">Nahrajte média</h3>
                     <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                       Přetáhněte soubory sem nebo klikněte pro výběr souborů.

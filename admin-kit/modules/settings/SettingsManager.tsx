@@ -121,12 +121,12 @@ export function SettingsManager() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Settings className="h-8 w-8 text-[oklch(0.55_0.15_264)]" />
+            <Settings className="h-8 w-8 text-purple-600 dark:text-purple-400" />
             Nastavení systému
           </h1>
           <p className="text-muted-foreground mt-1">Konfigurace CMS systému a preferencí</p>
           {lastSaved && (
-            <p className="text-sm text-[oklch(0.60_0.12_160)] mt-1">
+            <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-1">
               Naposledy uloženo: {lastSaved}
             </p>
           )}
@@ -323,10 +323,10 @@ export function SettingsManager() {
                 </div>
               </div>
 
-              <Card className="bg-[oklch(0.55_0.15_264)]/10 border-[oklch(0.55_0.15_264)]/20">
+              <Card className="bg-purple-100 dark:bg-purple-950 border-purple-200 dark:border-purple-800">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-3">
-                    <Mail className="w-5 h-5 text-[oklch(0.55_0.15_264)] mt-0.5" />
+                    <Mail className="w-5 h-5 text-purple-600 dark:text-purple-400 mt-0.5" />
                     <div>
                       <h4 className="text-sm font-semibold">Emailové notifikace</h4>
                       <p className="text-sm text-muted-foreground mt-1">

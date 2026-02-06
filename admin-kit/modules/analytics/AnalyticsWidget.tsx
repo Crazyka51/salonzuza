@@ -73,8 +73,8 @@ export function AnalyticsWidget() {
   };
 
   const getChangeColor = (change: number) => {
-    if (change > 0) return 'text-[oklch(0.60_0.12_160)]';
-    if (change < 0) return 'text-[oklch(0.50_0.18_25)]';
+    if (change > 0) return 'text-emerald-600 dark:text-emerald-400';
+    if (change < 0) return 'text-red-600 dark:text-red-400';
     return 'text-muted-foreground';
   };
 

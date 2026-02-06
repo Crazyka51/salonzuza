@@ -20,7 +20,7 @@ export function Footer() {
   return (
     <footer className="bg-[#333333] text-white">
       {/* Hlavní obsah footeru */}
-      <div className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Grid pro rozložení sloupců */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -101,7 +101,7 @@ export function Footer() {
       </div>
 
       {/* Mapa sekce */}
-      <div className="bg-[#2a2a2a] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="bg-[#2a2a2a] py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Grid pro mapu a info */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -132,7 +132,7 @@ export function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-gray-600 py-6 px-4 sm:px-6 lg:px-8">
+      <div className="border-t border-gray-600 py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center text-gray-400 text-sm">
             <p>

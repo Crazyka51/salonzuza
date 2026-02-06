@@ -35,26 +35,24 @@ export class PermissionManager {
   }
 }
 
-// Default permission definitions
+// Default permission definitions for Salon Zuza
 export const defaultPermissions: AdminPermission[] = [
-  { action: "read", resource: "users" },
-  { action: "create", resource: "users" },
-  { action: "update", resource: "users" },
-  { action: "delete", resource: "users" },
-  { action: "read", resource: "settings" },
-  { action: "update", resource: "settings" },
+  { action: "read", resource: "content" },
+  { action: "create", resource: "content" },
+  { action: "update", resource: "content" },
+  { action: "delete", resource: "content" },
+  { action: "read", resource: "analytics" },
 ]
 
-// Permission constants
+// Permission constants for Salon Zuza admin
 export const PERMISSIONS = {
-  USERS: {
-    READ: "users.read",
-    CREATE: "users.create",
-    UPDATE: "users.update",
-    DELETE: "users.delete",
+  CONTENT: {
+    READ: "content.read",
+    CREATE: "content.create",
+    UPDATE: "content.update",
+    DELETE: "content.delete",
   },
-  SETTINGS: {
-    READ: "settings.read",
-    UPDATE: "settings.update",
+  ANALYTICS: {
+    READ: "analytics.read",
   },
 } as const

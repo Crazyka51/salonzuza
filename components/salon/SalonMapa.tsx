@@ -30,8 +30,22 @@ export default function SalonMapa({ className = '', height = '400px' }: SalonMap
     shadowSize: [41, 41]
   })
 
+  // Převod height prop na Tailwind CSS třídu
+  const getHeightClass = (height: string) => {
+    switch (height) {
+      case '300px':
+        return 'h-[300px]'
+      case '400px':
+        return 'h-[400px]'
+      case '500px':
+        return 'h-[500px]'
+      default:
+        return `h-[${height}]`
+    }
+  }
+
   return (
-    <div className={`rounded-lg overflow-hidden shadow-lg ${className}`} style={{ height }}>
+    <div className={`rounded-lg overflow-hidden shadow-lg ${getHeightClass(height)} ${className}`}>
       <MapContainer 
         center={position} 
         zoom={16} 

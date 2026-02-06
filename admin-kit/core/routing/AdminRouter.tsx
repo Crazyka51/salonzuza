@@ -4,17 +4,11 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 type AdminView = 
   | 'dashboard'
-  | 'articles'
-  | 'article-new'
-  | 'article-edit'
-  | 'categories'
-  | 'media'
-  | 'users'
-  | 'user-new'
+  | 'content'
+  | 'editor-obsahu'
   | 'analytics'
-  | 'settings'
-  | 'newsletter'
-  | 'backups';
+  | 'statistiky'
+  | 'settings';
 
 interface AdminRouterContextType {
   currentView: AdminView;

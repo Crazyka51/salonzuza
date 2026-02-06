@@ -3,22 +3,34 @@
 import { AdminProvider } from "../../../admin-kit/core/context/AdminProvider"
 import { AuthProvider } from "../../../admin-kit/core/auth/AuthProvider"
 import { AdminRouterProvider } from "../../../admin-kit/core/routing/AdminRouter"
-import { UnifiedAdminLayout } from "../../../admin-kit/core/layout/UnifiedAdminLayout"
+import { AdminLayout } from "../../../admin-kit/core/layout/AdminLayout"
 import { AdminDashboardRouter } from "../../../admin-kit/core/routing/AdminDashboardRouter"
 import { ErrorBoundary } from "../../../admin-kit/ui/ErrorBoundary"
 import { ProtectedRoute } from "../../../admin-kit/core/auth/ProtectedRoute"
 import type { AdminConfig } from "../../../admin-kit/core/types"
 
-// Admin configuration
+// Admin configuration - Salon Zuza
 const adminConfig: Partial<AdminConfig> = {
-  title: "Admin Panel",
+  title: "Salon Zuza - Administrace",
   theme: "system",
   navigation: [
     {
       id: "dashboard",
-      label: "Dashboard",
+      label: "Přehled",
       href: "/admin",
       icon: "Home",
+    },
+    {
+      id: "content",
+      label: "Editor obsahu",
+      href: "/admin/editor-obsahu",
+      icon: "FileText",
+    },
+    {
+      id: "analytics",
+      label: "Statistiky",
+      href: "/admin/statistiky",
+      icon: "BarChart3",
     },
   ],
   auth: {
@@ -40,9 +52,9 @@ export function AdminCatchAllPage({ slug }: AdminCatchAllPageProps) {
         <AdminProvider config={adminConfig}>
           <AdminRouterProvider>
             <ProtectedRoute>
-              <UnifiedAdminLayout>
+              <AdminLayout>
                 <AdminDashboardRouter />
-              </UnifiedAdminLayout>
+              </AdminLayout>
             </ProtectedRoute>
           </AdminRouterProvider>
         </AdminProvider>

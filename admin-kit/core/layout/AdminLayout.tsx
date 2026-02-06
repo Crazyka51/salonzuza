@@ -55,54 +55,24 @@ const defaultNavigation: NavigationItem[] = [
     icon: "Home",
   },
   {
-    id: "articles",
-    label: "Články",
-    href: "/admin/articles",
+    id: "content",
+    label: "Editor obsahu",
+    href: "/admin/editor-obsahu",
     icon: "FileText",
-    permission: "posts.read",
-  },
-  {
-    id: "categories",
-    label: "Kategorie",
-    href: "/admin/categories",
-    icon: "Tag",
-    permission: "posts.read",
-  },
-  {
-    id: "media",
-    label: "Média",
-    href: "/admin/media",
-    icon: "Image",
-    permission: "media.read",
   },
   {
     id: "analytics",
-    label: "Analytika",
-    href: "/admin/analytics",
+    label: "Statistiky",
+    href: "/admin/statistiky",
     icon: "BarChart3",
-    permission: "analytics.read",
-  },
-  {
-    id: "users",
-    label: "Uživatelé",
-    href: "/admin/users",
-    icon: "Users",
-    permission: "users.read",
-  },
-  {
-    id: "settings",
-    label: "Nastavení",
-    href: "/admin/settings",
-    icon: "Settings",
-    permission: "settings.read",
   },
 ]
 
-// Quick Actions
+// Quick Actions - updated for Salon Zuza
 const quickActions = [
   {
-    id: "new-article",
-    title: "Nový článek",
+    id: "new-content",
+    title: "Nový obsah",
     icon: FileText,
     badge: "⌘N",
     onClick: () => (window.location.href = "/admin/articles/new"),
@@ -210,7 +180,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
       <div key={item.id}>
         <Button
           variant="ghost"
-          className={`w-full justify-start h-auto p-3 ${level > 0 ? "ml-4" : ""}`}
+          className={`w-full justify-start h-auto p-3 text-foreground hover:bg-accent hover:text-accent-foreground ${level > 0 ? "ml-4" : ""}`}
           onClick={() => {
             if (hasChildren) {
               toggleExpanded(item.id)
@@ -243,7 +213,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
     <div className="flex flex-col h-full">
       {/* Logo/Brand */}
       <div className="p-6 border-b">
-        <h2 className="text-lg font-semibold">{state.config.title}</h2>
+        <h2 className="text-lg font-semibold text-foreground">{state.config.title}</h2>
       </div>
 
       {/* Navigation */}
@@ -265,7 +235,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
               <Button
                 key={action.id}
                 variant="ghost"
-                className="w-full justify-start h-auto p-3 text-sm hover:bg-accent"
+                className="w-full justify-start h-auto p-3 text-sm hover:bg-accent hover:text-accent-foreground text-foreground"
                 onClick={action.onClick}
               >
                 <div className="flex items-center gap-3 w-full">
@@ -296,7 +266,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
               <AvatarFallback>{user.name?.charAt(0) || user.email.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user.name || user.email}</p>
+              <p className="text-sm font-medium truncate text-foreground">{user.name || user.email}</p>
               <Badge variant="outline" className="text-xs">
                 {user.role}
               </Badge>
@@ -340,7 +310,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
                   <input
                     type="text"
                     placeholder="Vyhledávání..."
-                    className="w-full pl-10 pr-4 py-2 text-sm border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full pl-10 pr-4 py-2 text-sm border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
               </div>

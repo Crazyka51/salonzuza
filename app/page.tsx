@@ -1,7 +1,9 @@
 "use client"
 
+import { useState, useEffect } from 'react'
 // Hlavní landing page - Salon Zuza
 import Link from 'next/link'
+import { LoadingBar } from '@/components/LoadingBar'
 import { Navbar } from '@/components/salon/Navbar'
 import { HeroSection } from '@/components/salon/HeroSection'
 import { PartnerLogos } from '@/components/salon/PartnerLogos'
@@ -12,6 +14,15 @@ import SalonGalerie from '@/components/salon/SalonGalerie'
 import { Footer } from '@/components/salon/Footer'
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
+
+  if (isLoading) {
+    return <LoadingBar onComplete={handleLoadingComplete} />
+  }
   return (
     <main className="min-h-screen">
       {/* Navigace */}

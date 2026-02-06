@@ -98,9 +98,9 @@ export default function ArticleManager({ onEditArticle, onCreateNew }: ArticleMa
 
   const getStatusBadge = (status: Article["status"]) => {
     const statusConfig = {
-      PUBLISHED: { label: "Publikováno", className: "bg-[oklch(0.60_0.12_160)] text-white" },
-      DRAFT: { label: "Koncept", className: "bg-[oklch(0.65_0.12_70)] text-white" },
-      ARCHIVED: { label: "Archivováno", className: "bg-[oklch(0.50_0.18_25)] text-white" }
+      PUBLISHED: { label: "Publikováno", className: "bg-emerald-500 text-white dark:bg-emerald-600" },
+      DRAFT: { label: "Koncept", className: "bg-yellow-500 text-white dark:bg-yellow-600" },
+      ARCHIVED: { label: "Archivováno", className: "bg-red-500 text-white dark:bg-red-600" }
     }
     const config = statusConfig[status]
     return <Badge className={config.className}>{config.label}</Badge>
@@ -121,7 +121,7 @@ export default function ArticleManager({ onEditArticle, onCreateNew }: ArticleMa
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
-            <FileText className="h-8 w-8 text-[oklch(0.55_0.15_264)]" />
+            <FileText className="h-8 w-8 text-purple-600 dark:text-purple-400" />
             Správa článků
           </h1>
           <p className="text-muted-foreground">Spravujte publikované články a koncepty</p>
@@ -147,7 +147,7 @@ export default function ArticleManager({ onEditArticle, onCreateNew }: ArticleMa
             <CardTitle className="text-sm font-medium text-muted-foreground">Publikované</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[oklch(0.60_0.12_160)]">
+            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
               {articles.filter(a => a.status === "PUBLISHED").length}
             </div>
           </CardContent>
@@ -157,7 +157,7 @@ export default function ArticleManager({ onEditArticle, onCreateNew }: ArticleMa
             <CardTitle className="text-sm font-medium text-muted-foreground">Koncepty</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[oklch(0.65_0.12_70)]">
+            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
               {articles.filter(a => a.status === "DRAFT").length}
             </div>
           </CardContent>
@@ -218,7 +218,7 @@ export default function ArticleManager({ onEditArticle, onCreateNew }: ArticleMa
         <CardContent>
           {isLoading ? (
             <div className="flex items-center justify-center p-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[oklch(0.55_0.15_264)]"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 dark:border-purple-400"></div>
             </div>
           ) : filteredArticles.length === 0 ? (
             <div className="text-center p-12 bg-secondary rounded-lg border border-border">

@@ -45,7 +45,7 @@ export function HeroSection({
             klic="hero_podnadpis"
             typ="popis"
             as="h2"
-            className="text-xl sm:text-2xl md:text-3xl font-light mb-8 tracking-wide border-l-2 border-white/50 pl-4 !text-white"
+            className="text-xl sm:text-2xl md:text-3xl font-light mb-8 tracking-wide border-l-2 border-white/50 pl-4 text-white"
             placeholder="PROFESIONÁLNÍ KADEŘNICTVÍ & KOSMETIKA"
           />
           

@@ -59,6 +59,9 @@ model Sluzba {
   createdAt          DateTime         @default(now()) @map("created_at")
   updatedAt          DateTime         @updatedAt @map("updated_at")
 
+  // Relations
+  rezervace          Rezervace[]
+
   @@map("sluzby")
 }
 
@@ -122,6 +125,9 @@ model Zamestnanec {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
+  // Relations
+  rezervace   Rezervace[]
+
   @@map("zamestnanci")
 }
 
@@ -137,4 +143,43 @@ model ZpravaKontaktu {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("zpravy_kontaktu")
+}
+
+// Model pro rezervace
+model Rezervace {
+  id               Int          @id @default(autoincrement())
+  jmeno            String
+  prijmeni         String
+  email            String
+  telefon          String
+  datum            DateTime
+  casOd            String       @map("cas_od")
+  casDo            String       @map("cas_do")
+  sluzbaId         Int?         @map("sluzba_id")
+  sluzba           Sluzba?      @relation(fields: [sluzbaId], references: [id])
+  zamestnanecId    Int?         @map("zamestnanec_id")
+  zamestnanec      Zamestnanec? @relation(fields: [zamestnanecId], references: [id])
+  poznamka         String?      @db.Text
+  stav             String       @default("pending") // pending | confirmed | completed | cancelled
+  cena             Int
+  zpusobPlatby     String?      @default("hotove") @map("zpusob_platby") // hotove | karta | prevod
+  notifikaceEmail  Boolean      @default(true) @map("notifikace_email")
+  notifikaceSms    Boolean      @default(false) @map("notifikace_sms")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  @@map("rezervace")
+}
+
+// Model pro provozní hodiny salonu  
+model ProvozniHodiny {
+  id           Int     @id @default(autoincrement())
+  denTydne     Int     @map("den_tydne") // 0=neděle, 1=pondělí, ... 6=sobota
+  casOtevrani  String  @map("cas_otevrani") // HH:MM
+  casZavreni   String  @map("cas_zavreni")  // HH:MM
+  jeZavreno    Boolean @default(false) @map("je_zavreno")
+  jeAktivni    Boolean @default(true) @map("je_aktivni")
+
+  @@unique([denTydne])
+  @@map("provozni_hodiny")
 }

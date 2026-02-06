@@ -45,7 +45,7 @@ export default function SalonGalerie({ className = '' }: SalonGalerieProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
 
   return (
-    <div className={`${className}`}>
+    <div className={`${className} pb-16 mb-8`}>
       {/* Grid galerie */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {salonImages.map((image, index) => (
