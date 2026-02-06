@@ -10,8 +10,8 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: 'Salon Zuza - Moderní kadeřnictví v Brně',
-  description: 'Profesionální kadeřnictví v Brně. Střihy, barvy, účesy pro ženy. Online rezervace termínů.',
+  title: 'Salon Zuza - Moderní kadeřnictví v Dobříši',
+  description: 'Profesionální kadeřnictví v Dobříši. Střihy, barvy, účesy pro ženy. Online rezervace termínů.',
   generator: 'Next.js',
 }
 
