@@ -21,11 +21,14 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const datum = searchParams.get('datum');
+    const datumOd = searchParams.get('datum_od');
+    const datumDo = searchParams.get('datum_do');
     const zamestnanecId = searchParams.get('zamestnanecId');
     const stav = searchParams.get('stav');
 
     const where: any = {};
 
+    // Support for single date filter
     if (datum) {
       const startOfDay = new Date(datum);
       const endOfDay = new Date(datum);
@@ -34,6 +37,28 @@ export async function GET(request: NextRequest) {
       where.datum = {
         gte: startOfDay,
         lte: endOfDay,
+      };
+    }
+    
+    // Support for date range filter (for calendar)
+    if (datumOd && datumDo) {
+      const startDate = new Date(datumOd);
+      const endDate = new Date(datumDo);
+      endDate.setHours(23, 59, 59, 999);
+      
+      where.datum = {
+        gte: startDate,
+        lte: endDate,
+      };
+    } else if (datumOd) {
+      where.datum = {
+        gte: new Date(datumOd),
+      };
+    } else if (datumDo) {
+      const endDate = new Date(datumDo);
+      endDate.setHours(23, 59, 59, 999);
+      where.datum = {
+        lte: endDate,
       };
     }
 

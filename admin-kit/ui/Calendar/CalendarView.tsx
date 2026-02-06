@@ -17,8 +17,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
 import { Badge } from '../../../components/ui/badge';
-import {
-  Dialog,
+import { Rezervace, CalendarViewProps } from '../../../types/rezervace';
+import { Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -30,40 +30,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../../../components/ui/tooltip';
-
-interface Rezervace {
-  id: number;
-  jmeno: string;
-  prijmeni: string;
-  email: string;
-  telefon: string;
-  datum: string;
-  cas_od: string;
-  cas_do: string;
-  sluzba?: {
-    nazev: string;
-    kategorie: {
-      nazev: string;
-    };
-  };
-  zamestnanec?: {
-    jmeno: string;
-    prijmeni: string;
-    uroven: string;
-  };
-  poznamka?: string;
-  stav: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  cena: number;
-  zpusobPlatby?: string;
-  created_at: string;
-}
-
-interface CalendarViewProps {
-  onDateSelect?: (date: Date) => void;
-  onReservationClick?: (rezervace: Rezervace) => void;
-  onCreateReservation?: (date: Date, time: string) => void;
-  selectedDate?: Date;
-}
 
 const DAYS_NAMES = ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'];
 const MONTHS_NAMES = [
@@ -82,6 +48,8 @@ export function CalendarView({
   onDateSelect, 
   onReservationClick, 
   onCreateReservation,
+  onEditReservation,
+  onDeleteReservation,
   selectedDate = new Date() 
 }: CalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -199,7 +167,7 @@ export function CalendarView({
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-foreground">
                 <Calendar className="h-5 w-5" />
                 <span>Kalendář rezervací</span>
               </CardTitle>
@@ -211,7 +179,7 @@ export function CalendarView({
               <Button variant="ghost" size="sm" onClick={goToPreviousMonth}>
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <span className="font-medium min-w-[120px] text-center">
+              <span className="font-medium min-w-30 text-center text-foreground">
                 {MONTHS_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}
               </span>
               <Button variant="ghost" size="sm" onClick={goToNextMonth}>
@@ -267,13 +235,13 @@ export function CalendarView({
                                   handleReservationClick(rezervace);
                                 }}
                               >
-                                {rezervace.cas_od} {rezervace.jmeno}
+                                {(rezervace.casOd || rezervace.cas_od)} {rezervace.jmeno}
                               </div>
                             </TooltipTrigger>
                             <TooltipContent>
                               <div className="text-xs">
                                 <div className="font-medium">{rezervace.jmeno} {rezervace.prijmeni}</div>
-                                <div>{rezervace.cas_od} - {rezervace.cas_do}</div>
+                                <div>{(rezervace.casOd || rezervace.cas_od)} - {(rezervace.casDo || rezervace.cas_do)}</div>
                                 <div>{rezervace.sluzba?.nazev}</div>
                                 <div className="text-muted-foreground">{STATUS_STYLES[rezervace.stav].label}</div>
                               </div>
@@ -308,11 +276,21 @@ export function CalendarView({
                   {STATUS_STYLES[selectedReservation.stav].label}
                 </Badge>
                 <div className="flex space-x-2">
-                  <Button size="sm" variant="outline">
-                    <Edit className="h-3 w-3" />
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="hover:bg-muted"
+                    onClick={() => onEditReservation?.(selectedReservation)}
+                  >
+                    <Edit className="h-3 w-3 text-foreground" />
                   </Button>
-                  <Button size="sm" variant="outline">
-                    <Trash2 className="h-3 w-3" />
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="hover:bg-muted"
+                    onClick={() => onDeleteReservation?.(selectedReservation)}
+                  >
+                    <Trash2 className="h-3 w-3 text-foreground" />
                   </Button>
                 </div>
               </div>
@@ -320,34 +298,34 @@ export function CalendarView({
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <User className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{selectedReservation.jmeno} {selectedReservation.prijmeni}</span>
+                  <span className="font-medium text-foreground">{selectedReservation.jmeno} {selectedReservation.prijmeni}</span>
                 </div>
                 
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span>{selectedReservation.cas_od} - {selectedReservation.cas_do}</span>
+                  <span className="text-foreground">{(selectedReservation.casOd || selectedReservation.cas_od)} - {(selectedReservation.casDo || selectedReservation.cas_do)}</span>
                 </div>
 
                 <div className="flex items-center space-x-2">
                   <Phone className="h-4 w-4 text-muted-foreground" />
-                  <span>{selectedReservation.telefon}</span>
+                  <span className="text-foreground">{selectedReservation.telefon}</span>
                 </div>
 
                 <div className="flex items-center space-x-2">
                   <Mail className="h-4 w-4 text-muted-foreground" />
-                  <span>{selectedReservation.email}</span>
+                  <span className="text-foreground">{selectedReservation.email}</span>
                 </div>
 
                 {selectedReservation.sluzba && (
                   <div>
-                    <div className="font-medium">{selectedReservation.sluzba.nazev}</div>
+                    <div className="font-medium text-foreground">{selectedReservation.sluzba.nazev}</div>
                     <div className="text-sm text-muted-foreground">{selectedReservation.sluzba.kategorie.nazev}</div>
                   </div>
                 )}
 
                 {selectedReservation.zamestnanec && (
                   <div>
-                    <div className="font-medium">
+                    <div className="font-medium text-foreground">
                       {selectedReservation.zamestnanec.jmeno} {selectedReservation.zamestnanec.prijmeni}
                     </div>
                     <div className="text-sm text-muted-foreground capitalize">
@@ -356,13 +334,13 @@ export function CalendarView({
                   </div>
                 )}
 
-                <div className="font-medium text-lg">
+                <div className="font-medium text-lg text-foreground">
                   {formatCena(selectedReservation.cena)}
                 </div>
 
                 {selectedReservation.poznamka && (
                   <div>
-                    <div className="font-medium text-sm">Poznámka:</div>
+                    <div className="font-medium text-sm text-foreground">Poznámka:</div>
                     <div className="text-sm text-muted-foreground">{selectedReservation.poznamka}</div>
                   </div>
                 )}

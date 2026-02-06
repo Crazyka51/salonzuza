@@ -38,29 +38,9 @@ import {
   TableHeader,
   TableRow,
 } from '../../../components/ui/table';
+import { Rezervace } from '../../../types/rezervace';
 
-// Typy pro rezervace
-interface Rezervace {
-  id: number;
-  jmeno: string;
-  prijmeni: string;
-  email: string;
-  telefon: string;
-  datum: string;
-  cas_od: string;
-  cas_do: string;
-  sluzba?: {
-    nazev: string;
-    kategorie: {
-      nazev: string;
-    };
-  };
-  poznamka?: string;
-  stav: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  cena: number;
-  created_at: string;
-}
-
+// Typy pro provozní hodiny
 interface ProvozniHodiny {
   den_tydne: number;
   cas_otevrani: string;
@@ -150,23 +130,32 @@ export function BookingWidget() {
 
   useEffect(() => {
     loadReservations();
-  }, [selectedDate]);
+  }, []); // Odstraníme závislost na selectedDate - chceme načíst všechny rezervace;
 
   // Načtení rezervací z API
   const loadReservations = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/rezervace?datum=${selectedDate}`);
+      // Načteme rezervace za posledních 30 dní a dalších 30 dní
+      const today = new Date();
+      const startDate = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+      const endDate = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+      
+      const response = await fetch(
+        `/api/rezervace?datum_od=${startDate.toISOString().split('T')[0]}&datum_do=${endDate.toISOString().split('T')[0]}`
+      );
+      
       if (response.ok) {
         const data = await response.json();
-        setRezervace(data.rezervace || mockRezervace); // Fallback na mock data při chybě API
+        console.log('načtené rezervace z API:', data.rezervace);
+        setRezervace(data.rezervace || []);
       } else {
-        console.warn('API nedostupné, používám mock data');
-        setRezervace(mockRezervace);
+        console.error('API chyba:', response.status, response.statusText);
+        setRezervace([]);
       }
     } catch (error) {
-      console.warn('Chyba při načítání rezervací, používám mock data:', error);
-      setRezervace(mockRezervace);
+      console.error('Chyba při načítání rezervací:', error);
+      setRezervace([]);
     } finally {
       setLoading(false);
     }
@@ -180,6 +169,76 @@ export function BookingWidget() {
   const handleReservationClick = (rezervace: Rezervace) => {
     console.log('Klik na rezervaci:', rezervace);
     // TODO: Otevřít detail/editaci rezervace
+  };
+
+  const handleEditReservation = async (rezervace: Rezervace) => {
+    console.log('Editace rezervace:', rezervace);
+    // TODO: Otevřít formulář pro editaci s předvyplněnými údaji
+    // Prozatím jen zobrazíme alert
+    const newNote = prompt('Zadejte novou poznámku:', rezervace.poznamka || '');
+    if (newNote !== null) {
+      try {
+        const response = await fetch(`/api/rezervace/${rezervace.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...rezervace, poznamka: newNote }),
+        });
+        
+        if (response.ok) {
+          alert('Rezervace byla upravena!');
+          loadReservations(); // Obnovit seznam
+        } else {
+          alert('Chyba při úpravě rezervace');
+        }
+      } catch (error) {
+        console.error('Chyba při úpravě:', error);
+        alert('Chyba při úpravě rezervace');
+      }
+    }
+  };
+
+  const handleDeleteReservation = async (rezervace: Rezervace) => {
+    if (confirm(`Opravdu chcete smazat rezervaci pro ${rezervace.jmeno} ${rezervace.prijmeni}?`)) {
+      try {
+        const response = await fetch(`/api/rezervace/${rezervace.id}`, {
+          method: 'DELETE',
+        });
+        
+        if (response.ok) {
+          alert('Rezervace byla smazána!');
+          loadReservations(); // Obnovit seznam
+        } else {
+          alert('Chyba při mazání rezervace');
+        }
+      } catch (error) {
+        console.error('Chyba při mazání:', error);
+        alert('Chyba při mazání rezervace');
+      }
+    }
+  };
+
+  const handleConfirmReservation = async (rezervace: Rezervace) => {
+    try {
+      const response = await fetch(`/api/rezervace/${rezervace.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...rezervace, stav: 'confirmed' }),
+      });
+      
+      if (response.ok) {
+        alert('Rezervace byla potvrzena!');
+        loadReservations(); // Obnovit seznam
+      } else {
+        alert('Chyba při potvrzování rezervace');
+      }
+    } catch (error) {
+      console.error('Chyba při potvrzování:', error);
+      alert('Chyba při potvrzování rezervace');
+    }
   };
 
   const handleCreateReservation = (date?: Date, time?: string) => {
@@ -381,11 +440,11 @@ export function BookingWidget() {
                             {rezervace.jmeno} {rezervace.prijmeni}
                           </div>
                           <div className="text-sm text-muted-foreground flex items-center gap-2">
-                            <Mail className="h-3 w-3" />
+                            <Mail className="h-3 w-3 text-muted-foreground" />
                             {rezervace.email}
                           </div>
                           <div className="text-sm text-muted-foreground flex items-center gap-2">
-                            <PhoneCall className="h-3 w-3" />
+                            <PhoneCall className="h-3 w-3 text-muted-foreground" />
                             {rezervace.telefon}
                           </div>
                         </div>
@@ -394,7 +453,7 @@ export function BookingWidget() {
                         <div>
                           <div className="font-medium">{formatDate(rezervace.datum)}</div>
                           <div className="text-sm text-muted-foreground">
-                            {rezervace.cas_od} - {rezervace.cas_do}
+                            {(rezervace.cas_od || rezervace.casOd)} - {(rezervace.cas_do || rezervace.casDo)}
                           </div>
                         </div>
                       </TableCell>
@@ -416,18 +475,38 @@ export function BookingWidget() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1">
-                          <Button variant="ghost" size="sm">
-                            <Eye className="h-4 w-4" />
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            title="Zobrazit detail"
+                            onClick={() => handleReservationClick(rezervace)}
+                          >
+                            <Eye className="h-4 w-4 text-muted-foreground" />
                           </Button>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            title="Upravit rezervaci"
+                            onClick={() => handleEditReservation(rezervace)}
+                          >
+                            <Edit className="h-4 w-4 text-muted-foreground" />
                           </Button>
                           {rezervace.stav === 'pending' && (
-                            <Button variant="ghost" size="sm">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              title="Potvrdit rezervaci"
+                              onClick={() => handleConfirmReservation(rezervace)}
+                            >
                               <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
                             </Button>
                           )}
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            title="Zrušit rezervaci"
+                            onClick={() => handleDeleteReservation(rezervace)}
+                          >
                             <X className="h-4 w-4 text-red-500 dark:text-red-400" />
                           </Button>
                         </div>
@@ -455,6 +534,8 @@ export function BookingWidget() {
               onDateSelect={handleCalendarDateSelect}
               onReservationClick={handleReservationClick}
               onCreateReservation={handleCreateReservation}
+              onEditReservation={handleEditReservation}
+              onDeleteReservation={handleDeleteReservation}
             />
           </div>
         </TabsContent>
