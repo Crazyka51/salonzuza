@@ -48,6 +48,7 @@ interface StatCard {
 }
 
 interface RecentActivity {
+  id: string;
   type: string;
   title: string;
   time: string;
@@ -106,27 +107,38 @@ export function SalonDashboard() {
 
   const recentActivity: RecentActivity[] = [
     {
+      id: '1',
       type: 'booking',
       title: 'Nová rezervace: Marie Nováková',
       time: 'před 15 minutami',
       user: 'Online',
     },
     {
+      id: '2',
       type: 'content',
       title: 'Upraven obsah stránky služby',
       time: 'před 2 hodinami',
       user: 'Admin',
     },
     {
+      id: '3', 
       type: 'booking',
       title: 'Potvrzena rezervace: Jana Svobodová',
       time: 'před 3 hodinami',
       user: 'Admin',
     },
     {
+      id: '4',
       type: 'content',
       title: 'Aktualizován ceník služeb',
       time: 'před 1 dnem',
+      user: 'Admin',
+    },
+    {
+      id: '5',
+      type: 'booking',
+      title: 'Zrušena rezervace: Petra Novotná',
+      time: 'před 2 dny',
       user: 'Admin',
     },
   ];
@@ -254,8 +266,8 @@ export function SalonDashboard() {
                 <CardTitle>Nedávná aktivita</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3">
+                {recentActivity.map((activity) => (
+                  <div key={activity.id} className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-0.5">
                       {getActivityIcon(activity.type)}
                     </div>

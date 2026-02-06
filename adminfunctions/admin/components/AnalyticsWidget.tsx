@@ -148,9 +148,9 @@ export default function AnalyticsWidget() {
     },
     topPages: [
       { path: "/", views: 1234, change: 5.2 },
-      { path: "/aktuality", views: 856, change: -2.1 },
-      { path: "/aktuality/nova-tramvajova-trat", views: 432, change: 18.5 },
-      { path: "/aktuality/komunitni-zahrada", views: 298, change: 7.3 },
+      { path: "/sluzby", views: 856, change: 8.3 },
+      { path: "/rezervace", views: 432, change: 18.5 },
+      { path: "/cenik", views: 298, change: 7.3 },
       { path: "/kontakt", views: 187, change: -1.2 },
     ],
     devices: [
