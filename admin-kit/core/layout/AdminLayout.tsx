@@ -32,12 +32,10 @@ export function AdminLayout({ children, className }: AdminLayoutProps) {
 
   return (
     <div className={`min-h-screen bg-background relative ${className}`}>
-      {/* Modrý vertikální pruh pro celou stránku */}
-      <div className="absolute left-0 top-0 bottom-0 w-14 sm:w-16 bg-blue-600 z-50"></div>
       
       {/* Header */}
       <header className="sticky top-0 z-40 border-b bg-gray-900 text-white">
-        <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 pl-16 sm:pl-20">
+        <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6">
           {/* Title */}
           <div className="flex items-center gap-4">
             <h1 className="text-lg font-semibold text-white">{state.config.title}</h1>
@@ -86,7 +84,7 @@ export function AdminLayout({ children, className }: AdminLayoutProps) {
       </header>
 
       {/* Page Content */}
-      <main className="flex-1 p-3 sm:p-4 lg:p-6 pl-16 sm:pl-20 lg:pl-20">{children}</main>
+      <main className="flex-1 p-3 sm:p-4 lg:p-6">{children}</main>
     </div>
   )
 }

@@ -1,6 +1,9 @@
 // Module registry and exports - Salon Zuza admin modules
 export { PageContentEditor } from "./content/PageContentEditor"
 export { AnalyticsWidget } from "./analytics/AnalyticsWidget"
+export { EmployeeManager } from "./employees/EmployeeManager"
+export { SettingsManager } from "./settings/SettingsManager"
+// Note: MediaManager import will be handled directly in SalonDashboard due to existing structure
 
 // Module definitions for configuration
 export const defaultModules = [

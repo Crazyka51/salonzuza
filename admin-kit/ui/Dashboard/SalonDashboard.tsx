@@ -30,6 +30,10 @@ import { useAdminRouter } from '@/admin-kit/core/routing/AdminRouter';
 import AnalyticsWidget from '../../../adminfunctions/admin/components/AnalyticsWidget';
 import { BookingWidget } from '../../../adminfunctions/admin/components/BookingWidget';
 import { PageContentEditor } from '../../modules/content/PageContentEditor';
+import { ProfileManager } from '../../modules/profile/ProfileManager';
+import { EmployeeManager } from '../../modules/employees/EmployeeManager';
+import { SettingsManager } from '../../modules/settings/SettingsManager';
+import MediaManager from '../../modules/media/MediaManager';
 
 interface QuickAction {
   label: string;
@@ -186,11 +190,15 @@ export function SalonDashboard() {
 
        {/* Tabs Navigation */}
        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-8 h-auto">
           <TabsTrigger value="overview" className="text-xs sm:text-sm">Přehled</TabsTrigger>
           <TabsTrigger value="content" className="text-xs sm:text-sm">Obsah</TabsTrigger>
           <TabsTrigger value="analytics" className="text-xs sm:text-sm">Statistiky</TabsTrigger>
           <TabsTrigger value="booking" className="text-xs sm:text-sm">Rezervace</TabsTrigger>
+          <TabsTrigger value="employees" className="text-xs sm:text-sm">Zaměstnanci</TabsTrigger>
+          <TabsTrigger value="media" className="text-xs sm:text-sm">Média</TabsTrigger>
+          <TabsTrigger value="settings" className="text-xs sm:text-sm">Nastavení</TabsTrigger>
+          <TabsTrigger value="profile" className="text-xs sm:text-sm">Profil</TabsTrigger>
         </TabsList>
         
         {/* Overview Tab */}
@@ -319,6 +327,26 @@ export function SalonDashboard() {
         {/* Booking System Tab */}
         <TabsContent value="booking" className="mt-6">
           <BookingWidget />
+        </TabsContent>
+
+        {/* Employee Management Tab */}
+        <TabsContent value="employees" className="mt-6">
+          <EmployeeManager />
+        </TabsContent>
+
+        {/* Media Management Tab */}
+        <TabsContent value="media" className="mt-6">
+          <MediaManager />
+        </TabsContent>
+
+        {/* Settings Tab */}
+        <TabsContent value="settings" className="mt-6">
+          <SettingsManager />
+        </TabsContent>
+
+        {/* Profile Tab */}
+        <TabsContent value="profile" className="mt-6">
+          <ProfileManager />
         </TabsContent>
       </Tabs>
     </div>
