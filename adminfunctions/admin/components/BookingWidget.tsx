@@ -581,6 +581,7 @@ export function BookingWidget() {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

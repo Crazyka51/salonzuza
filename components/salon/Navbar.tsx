@@ -59,6 +59,13 @@ export function Navbar() {
               </Link>
               <span className="text-gray-300 text-lg">|</span>
               <Link 
+                href="/kontakt" 
+                className="text-[#212121] hover:text-[#B8A876] px-4 py-2 text-sm font-semibold tracking-widest transition-colors duration-200 uppercase"
+              >
+                KONTAKT
+              </Link>
+              <span className="text-gray-300 text-lg">|</span>
+              <Link 
                 href="/online-rezervace" 
                 className="bg-[#B8A876] hover:bg-[#A39566] text-[#212121] px-6 py-3 ml-6 text-sm font-black tracking-widest transition-all duration-200 uppercase rounded-none"
               >
@@ -116,6 +123,13 @@ export function Navbar() {
                 onClick={() => setJeMobileMenuOtevrene(false)}
               >
                 GALERIE
+              </Link>
+              <Link 
+                href="/kontakt" 
+                className="text-[#212121] hover:text-[#B8A876] block py-3 text-base font-semibold tracking-widest uppercase transition-colors"
+                onClick={() => setJeMobileMenuOtevrene(false)}
+              >
+                KONTAKT
               </Link>
               <Link 
                 href="/online-rezervace" 

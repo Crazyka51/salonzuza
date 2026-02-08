@@ -12,19 +12,13 @@ import type { AdminConfig } from "../../../admin-kit/core/types"
 // Admin configuration - Salon Zuza
 const adminConfig: Partial<AdminConfig> = {
   title: "Salon Zuza - Administrace",
-  theme: "system",
+  theme: "dark",
   navigation: [
     {
       id: "dashboard",
       label: "Přehled",
       href: "/admin",
       icon: "Home",
-    },
-    {
-      id: "content",
-      label: "Editor obsahu",
-      href: "/admin/editor-obsahu",
-      icon: "FileText",
     },
     {
       id: "analytics",

@@ -57,8 +57,8 @@ export default function KontaktPage() {
                       <h3 className="text-lg font-semibold text-[#333333]">Adresa</h3>
                       <p className="text-[#555555]">
                         Salon Zuza<br/>
-                        Náměstí Míru 15<br/>
-                        123 45 Praha 2
+                        Fričova 1240<br/>
+                        Dobříš, 263 01
                       </p>
                     </div>
                   </div>
@@ -72,8 +72,8 @@ export default function KontaktPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-[#333333]">Telefon</h3>
-                      <a href="tel:+420123456789" className="text-[#B8A876] hover:text-[#A39566]">
-                        +420 123 456 789
+                      <a href="tel:+420724311258" className="text-[#B8A876] hover:text-[#A39566]">
+                        +420 724 311 258
                       </a>
                     </div>
                   </div>
@@ -87,8 +87,8 @@ export default function KontaktPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-[#333333]">Email</h3>
-                      <a href="mailto:info@salon-zuza.cz" className="text-[#B8A876] hover:text-[#A39566]">
-                        info@salon-zuza.cz
+                      <a href="mailto:zuzka@salon-zuza.cz" className="text-[#B8A876] hover:text-[#A39566]">
+                        zuzka@salon-zuza.cz
                       </a>
                     </div>
                   </div>
@@ -136,13 +136,15 @@ export default function KontaktPage() {
                       <span className="text-[#555555]">9:00 - 18:00</span>
                     </div>
                     <div className="flex justify-between" role="listitem">
-                      <span className="font-medium">Sobota</span>
-                      <span className="text-[#555555]">8:00 - 14:00</span>
+                      <span className="font-medium text-red-600">Sobota</span>
+                      <span className="text-red-600">ZAVŘENO</span>
                     </div>
                     <div className="flex justify-between" role="listitem">
                       <span className="font-medium text-red-600">Neděle</span>
                       <span className="text-red-600">ZAVŘENO</span>
                     </div>
+                    
+                    
                   </div>
                 </div>
               </div>

@@ -1,20 +1,20 @@
 import { AdminCatchAllPage } from "./AdminCatchAllPage"
 
 // Next.js App Router catch-all page for admin routes
-export default function AdminPage({ params }: { params: { slug?: string[] } }) {
-  return <AdminCatchAllPage slug={params.slug || []} />
+export default async function AdminPage({ params }: { params: Promise<{ slug?: string[] }> }) {
+  const resolvedParams = await params
+  return <AdminCatchAllPage slug={resolvedParams.slug || []} />
 }
 
 // Generate metadata for admin pages
-export async function generateMetadata({ params }: { params: { slug?: string[] } }) {
-  const slug = params.slug || []
+export async function generateMetadata({ params }: { params: Promise<{ slug?: string[] }> }) {
+  const resolvedParams = await params
+  const slug = resolvedParams.slug || []
   const pageName = slug.length > 0 ? slug[0] : "prehled"
   
   const pageNames: Record<string, string> = {
     dashboard: "Přehled",
     prehled: "Přehled", 
-    "editor-obsahu": "Editor obsahu",
-    content: "Editor obsahu",
     statistiky: "Statistiky",
     analytics: "Statistiky",
   }

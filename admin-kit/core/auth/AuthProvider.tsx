@@ -40,10 +40,30 @@ export function AuthProvider({
         const response = await api.get(sessionEndpoint)
         if (response.success && response.data) {
           setUser(response.data)
+        } else {
+          // For development - set mock user if no session exists
+          setUser({
+            id: "1",
+            name: "Admin Uživatel",
+            email: "admin@salonzuza.cz",
+            role: "admin",
+            avatar: "/zajac.jpg",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          })
         }
       } catch (err) {
-        // No existing session, that's fine
-        console.log("No existing session found")
+        // No existing session, set mock user for development
+        console.log("No existing session found, using mock user")
+        setUser({
+          id: "1",
+          name: "Admin Uživatel",
+          email: "admin@salonzuza.cz",
+          role: "admin",
+          avatar: "/zajac.jpg",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        })
       } finally {
         setLoading(false)
       }

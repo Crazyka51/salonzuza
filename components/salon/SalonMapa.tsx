@@ -18,7 +18,8 @@ interface SalonMapaProps {
 }
 
 export default function SalonMapa({ className = '', height = '400px' }: SalonMapaProps) {
-  const position: [number, number] = [49.7806944, 14.1710306]
+  // GPS souřadnice pro Fričovu 1240, Dobříš
+  const position: [number, number] = [49.7806136, 14.1707886]
   
   const customIcon = new L.Icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -66,8 +67,8 @@ export default function SalonMapa({ className = '', height = '400px' }: SalonMap
                 Profesionální kadeřnictví & kosmetika
               </p>
               <p className="text-xs text-gray-600">
-                Hlavní třída 123<br />
-                Brno 602 00
+                Fričova 1240<br />
+                Dobříš, 263 01
               </p>
             </div>
           </Popup>

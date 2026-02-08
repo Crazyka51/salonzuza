@@ -49,6 +49,7 @@ model Sluzba {
   jeAktivni         Boolean         @default(true) @map("je_aktivni")
   createdAt         DateTime        @default(now()) @map("created_at")
   updatedAt         DateTime        @updatedAt @map("updated_at")
+  poradi            Int             @default(0)
   rezervace         Rezervace[]
   kategorie         KategorieSluzeb @relation(fields: [kategorieId], references: [id])
 

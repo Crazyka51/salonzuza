@@ -8,11 +8,13 @@ export class ObsahStrankyModel {
     try {
       const obsah = await prisma.obsahStranky.findUnique({
         where: {
-          klicObsahu: klic,
-          jeAktivni: true
+          klicObsahu: klic
         }
       })
-      return obsah?.obsah || null
+      if (!obsah || !obsah.jeAktivni) {
+        return null
+      }
+      return obsah.obsah || null
     } catch (error) {
       console.error(`Chyba při načítání obsahu pro klíč "${klic}":`, error)
       return null
@@ -46,9 +48,17 @@ export class ObsahStrankyModel {
   // Legacy metody pro zpětnou kompatibilitu se stávajícím kódem
   static async ziskatPodleKlice(klic: string) {
     const obsah = await prisma.obsahStranky.findUnique({
-      where: { klicObsahu: klic, jeAktivni: true }
+      where: { klicObsahu: klic }
     })
-    return obsah ? { id: obsah.id, klic, hodnota: obsah.obsah, stranka: 'home' } : null
+    if (!obsah || !obsah.jeAktivni) {
+      return null
+    }
+    return { 
+      id: obsah.id, 
+      klic: obsah.klicObsahu, 
+      hodnota: obsah.obsah, 
+      stranka: obsah.kategorie || 'general' 
+    }
   }
 
   static async findByCategory(kategorie: string) {
@@ -63,7 +73,10 @@ export class ObsahStrankyModel {
 
   static async ziskatPodleStranky(stranka: string) {
     const obsahy = await prisma.obsahStranky.findMany({
-      where: { jeAktivni: true },
+      where: { 
+        kategorie: stranka,
+        jeAktivni: true 
+      },
       orderBy: { klicObsahu: 'asc' }
     })
     return obsahy.map((item: { id: number; klicObsahu: string; obsah: string }) => ({
@@ -79,11 +92,11 @@ export class ObsahStrankyModel {
       where: { jeAktivni: true },
       orderBy: { klicObsahu: 'asc' }
     })
-    return obsahy.map((item: { id: number; klicObsahu: string; obsah: string }) => ({
+    return obsahy.map((item: { id: number; klicObsahu: string; obsah: string; kategorie: string | null }) => ({
       id: item.id,
       klic: item.klicObsahu,
       hodnota: item.obsah,
-      stranka: 'home'
+      stranka: item.kategorie || 'general'
     }))
   }
 
@@ -92,10 +105,10 @@ export class ObsahStrankyModel {
       data: {
         klicObsahu: data.klic,
         obsah: data.hodnota,
-        kategorie: 'general'
+        kategorie: data.stranka || 'general'
       }
     })
-    return { id: created.id, ...data }
+    return { id: created.id, klic: data.klic, hodnota: data.hodnota, stranka: data.stranka || 'general' }
   }
 
   static async aktualizovat(id: number, data: { hodnota: string }) {

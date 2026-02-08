@@ -37,6 +37,8 @@ export async function adminApiHandler(request: NextRequest): Promise<NextRespons
         return handlePostsApi(request, adminPath.slice(1), user)
       case "settings":
         return handleSettingsApi(request, adminPath.slice(1), user)
+      case "profile":
+        return handleProfileApi(request, adminPath.slice(1), user)
       default:
         return new NextResponse(
           JSON.stringify({
@@ -250,4 +252,99 @@ async function handleSettingsApi(request: NextRequest, pathSegments: string[], u
         { status: 405, headers: { "Content-Type": "application/json" } },
       )
   }
+}
+
+// Profile API handler
+async function handleProfileApi(request: NextRequest, pathSegments: string[], user: any): Promise<NextResponse> {
+  const [action] = pathSegments
+
+  switch (request.method) {
+    case "GET":
+      if (!action) {
+        // Get current user profile
+        return new NextResponse(
+          JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone || "",
+            address: user.address || "",
+            avatar: user.avatar || "",
+            role: user.role,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        )
+      }
+      break
+
+    case "PUT":
+      if (!action) {
+        // Update user profile
+        try {
+          const body = await request.json()
+
+          // Validate required fields
+          if (!body.name || !body.email) {
+            return new NextResponse(
+              JSON.stringify({
+                success: false,
+                message: "Name and email are required",
+              }),
+              { status: 400, headers: { "Content-Type": "application/json" } },
+            )
+          }
+
+          // Here you would update the user in your database
+          // For now, we'll just return success
+          const updatedUser = {
+            id: user.id,
+            name: body.name,
+            email: body.email,
+            phone: body.phone || "",
+            address: body.address || "",
+            avatar: body.avatar || user.avatar,
+            role: user.role,
+            createdAt: user.createdAt,
+            updatedAt: new Date().toISOString(),
+          }
+
+          return new NextResponse(
+            JSON.stringify({
+              success: true,
+              data: updatedUser,
+              message: "Profile updated successfully",
+            }),
+            { status: 200, headers: { "Content-Type": "application/json" } },
+          )
+        } catch (error) {
+          return new NextResponse(
+            JSON.stringify({
+              success: false,
+              message: "Invalid JSON data",
+            }),
+            { status: 400, headers: { "Content-Type": "application/json" } },
+          )
+        }
+      }
+      break
+
+    default:
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          message: "Method not allowed",
+        }),
+        { status: 405, headers: { "Content-Type": "application/json" } },
+      )
+  }
+
+  return new NextResponse(
+    JSON.stringify({
+      success: false,
+      message: "Endpoint not found",
+    }),
+    { status: 404, headers: { "Content-Type": "application/json" } },
+  )
 }

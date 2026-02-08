@@ -163,9 +163,29 @@ export function SalonDashboard() {
           Administrační panel pro správu salonu krásy
         </p>
       </div>
+      {/* Welcome Message */}
+          <Card className="bg-gradient-to-r from-[#B8A876]/10 to-[#A39566]/10 border-[#B8A876]">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+                <div className="shrink-0 mx-auto sm:mx-0">
+                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-[#B8A876]" />
+                </div>
+                <div className="text-center sm:text-left">
+                  <h3 className="text-lg sm:text-xl font-semibold text-[#B8A876]">
+                    Vítejte v administraci Salon Zuza
+                  </h3>
+                  <p className="text-muted-foreground mt-1 text-sm sm:text-base">
+                    Spravujte obsah webu a sledujte statistiky návštěvnosti. 
+                    Využijte rychlé akce pro editaci obsahu nebo záložku Statistiky pro detailní analýzy.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+         
 
-      {/* Tabs Navigation */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+       {/* Tabs Navigation */}
+       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
           <TabsTrigger value="overview" className="text-xs sm:text-sm">Přehled</TabsTrigger>
           <TabsTrigger value="content" className="text-xs sm:text-sm">Obsah</TabsTrigger>
@@ -174,7 +194,7 @@ export function SalonDashboard() {
         </TabsList>
         
         {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
+         <TabsContent value="overview" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
           {/* Quick Actions */}
           <div className="grid grid-cols-1 gap-4">
             <Card
@@ -184,7 +204,7 @@ export function SalonDashboard() {
             >
               <CardContent className="flex items-center p-4 sm:p-6">
                 <FileText 
-                  className="h-6 w-6 sm:h-8 sm:w-8 mr-3 sm:mr-4 flex-shrink-0" 
+                  className="h-6 w-6 sm:h-8 sm:w-8 mr-3 sm:mr-4 shrink-0" 
                   style={{ color: '#B8A876' }}
                 />
                 <div className="min-w-0">
@@ -206,7 +226,7 @@ export function SalonDashboard() {
                     {stat.title}
                   </CardTitle>
                   <stat.icon 
-                    className="h-4 w-4 text-muted-foreground flex-shrink-0" 
+                    className="h-4 w-4 text-muted-foreground shrink-0" 
                     style={{ color: stat.color }}
                   />
                 </CardHeader>
@@ -268,7 +288,7 @@ export function SalonDashboard() {
               <CardContent className="space-y-3 sm:space-y-4">
                 {recentActivity.map((activity) => (
                   <div key={activity.id} className="flex items-start space-x-2 sm:space-x-3">
-                    <div className="flex-shrink-0 mt-0.5">
+                    <div className="shrink-0 mt-0.5">
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -284,26 +304,6 @@ export function SalonDashboard() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Welcome Message */}
-          <Card className="bg-gradient-to-r from-[#B8A876]/10 to-[#A39566]/10 border-[#B8A876]">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
-                <div className="flex-shrink-0 mx-auto sm:mx-0">
-                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-[#B8A876]" />
-                </div>
-                <div className="text-center sm:text-left">
-                  <h3 className="text-lg sm:text-xl font-semibold text-[#B8A876]">
-                    Vítejte v administraci Salon Zuza
-                  </h3>
-                  <p className="text-muted-foreground mt-1 text-sm sm:text-base">
-                    Spravujte obsah webu a sledujte statistiky návštěvnosti. 
-                    Využijte rychlé akce pro editaci obsahu nebo záložku Statistiky pro detailní analýzy.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
 
         {/* Content Editor Tab */}
