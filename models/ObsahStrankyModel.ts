@@ -31,7 +31,8 @@ export class ObsahStrankyModel {
         }
       })
       
-      return obsahy.map((item: { klicObsahu: string; obsah: string; nazev: string | null }) => ({
+      return obsahy.map((item: { id: number; klicObsahu: string; obsah: string; nazev: string | null }) => ({
+        id: item.id,
         klic: item.klicObsahu,
         obsah: item.obsah,
         nazev: item.nazev || undefined
@@ -44,13 +45,16 @@ export class ObsahStrankyModel {
 
   // Legacy metody pro zpětnou kompatibilitu se stávajícím kódem
   static async ziskatPodleKlice(klic: string) {
-    const obsah = await this.getObsah(klic)
-    return obsah ? { klic, hodnota: obsah, stranka: 'home' } : null
+    const obsah = await prisma.obsahStranky.findUnique({
+      where: { klicObsahu: klic, jeAktivni: true }
+    })
+    return obsah ? { id: obsah.id, klic, hodnota: obsah.obsah, stranka: 'home' } : null
   }
 
   static async findByCategory(kategorie: string) {
     const obsahy = await this.getObsahPodleKategorie(kategorie)
     return obsahy.map(item => ({
+      id: item.id,
       klicObsahu: item.klic,
       obsahText: item.obsah,
       kategorie
@@ -62,7 +66,8 @@ export class ObsahStrankyModel {
       where: { jeAktivni: true },
       orderBy: { klicObsahu: 'asc' }
     })
-    return obsahy.map((item: { klicObsahu: string; obsah: string }) => ({
+    return obsahy.map((item: { id: number; klicObsahu: string; obsah: string }) => ({
+      id: item.id,
       klic: item.klicObsahu,
       hodnota: item.obsah,
       stranka
@@ -74,7 +79,8 @@ export class ObsahStrankyModel {
       where: { jeAktivni: true },
       orderBy: { klicObsahu: 'asc' }
     })
-    return obsahy.map((item: { klicObsahu: string; obsah: string }) => ({
+    return obsahy.map((item: { id: number; klicObsahu: string; obsah: string }) => ({
+      id: item.id,
       klic: item.klicObsahu,
       hodnota: item.obsah,
       stranka: 'home'
@@ -101,7 +107,7 @@ export class ObsahStrankyModel {
   }
 
   static async aktualizovatHodnotu(klic: string, hodnota: string) {
-    await prisma.obsahStranky.upsert({
+    const updated = await prisma.obsahStranky.upsert({
       where: { klicObsahu: klic },
       update: { obsah: hodnota },
       create: {
@@ -110,7 +116,7 @@ export class ObsahStrankyModel {
         kategorie: 'general'
       }
     })
-    return { klic, hodnota }
+    return { id: updated.id, klic, hodnota }
   }
 
   static async smazat(id: number) {
@@ -133,7 +139,7 @@ export class ObsahStrankyModel {
 
   static async update(klicObsahu: string, data: any) {
     const hodnota = data.obsahText || data.obsah || data.nazev || ''
-    await prisma.obsahStranky.upsert({
+    const updated = await prisma.obsahStranky.upsert({
       where: { klicObsahu },
       update: { obsah: hodnota, nazev: data.nazev },
       create: {
@@ -143,7 +149,7 @@ export class ObsahStrankyModel {
         nazev: data.nazev
       }
     })
-    return { klicObsahu, ...data }
+    return { id: updated.id, klicObsahu, ...data }
   }
 
   static async delete(klicObsahu: string) {
@@ -158,7 +164,8 @@ export class ObsahStrankyModel {
       where: { jeAktivni: true },
       orderBy: { klicObsahu: 'asc' }
     })
-    return obsahy.map((item: { klicObsahu: string; obsah: string; jeAktivni: boolean }) => ({
+    return obsahy.map((item: { id: number; klicObsahu: string; obsah: string; jeAktivni: boolean }) => ({
+      id: item.id,
       klicObsahu: item.klicObsahu,
       obsahText: item.obsah,
       jeAktivni: item.jeAktivni

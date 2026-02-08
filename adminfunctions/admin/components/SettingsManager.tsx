@@ -161,11 +161,13 @@ export default function SettingsManager() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Výchozí kategorie</label>
+                <label htmlFor="defaultCategory" className="block text-sm font-medium text-gray-700 mb-2">Výchozí kategorie</label>
                 <select
+                  id="defaultCategory"
                   value={settings.defaultCategory || ""} // Use empty string for null
                   onChange={(e) => setSettings((prev) => ({ ...prev, defaultCategory: e.target.value || null }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  title="Výchozí kategorie"
                 >
                   <option value="">-- Vyberte kategorii --</option>
                   {categoryOptions.map((cat) => (
@@ -177,8 +179,9 @@ export default function SettingsManager() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Interval auto-uložení (ms)</label>
+                <label htmlFor="autoSaveInterval" className="block text-sm font-medium text-gray-700 mb-2">Interval auto-uložení (ms)</label>
                 <input
+                  id="autoSaveInterval"
                   type="number"
                   min="1000"
                   max="60000"
@@ -186,31 +189,36 @@ export default function SettingsManager() {
                   value={settings.autoSaveInterval}
                   onChange={(e) => setSettings((prev) => ({ ...prev, autoSaveInterval: Number(e.target.value) }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  title="Interval automatického ukládání"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Maximální velikost souboru (MB)</label>
+                <label htmlFor="maxFileSize" className="block text-sm font-medium text-gray-700 mb-2">Maximální velikost souboru (MB)</label>
                 <input
+                  id="maxFileSize"
                   type="number"
                   min="1"
                   max="100"
                   value={settings.maxFileSize}
                   onChange={(e) => setSettings((prev) => ({ ...prev, maxFileSize: Number(e.target.value) }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  title="Maximální velikost souboru"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Výchozí viditelnost článků</label>
+                <label htmlFor="defaultVisibility" className="block text-sm font-medium text-gray-700 mb-2">Výchozí viditelnost článků</label>
                 <select
+                  id="defaultVisibility"
                   value={settings.defaultVisibility}
                   onChange={(e) =>
                     setSettings((prev) => ({ ...prev, defaultVisibility: e.target.value as "public" | "draft" }))
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  title="Výchozí viditelnost"
                 >
                   <option value="draft">Koncept</option>
                   <option value="public">Publikováno</option>
@@ -226,6 +234,7 @@ export default function SettingsManager() {
                   checked={settings.allowImageUpload}
                   onChange={(e) => setSettings((prev) => ({ ...prev, allowImageUpload: e.target.checked }))}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  title="Povolit nahrávání obrázků"
                 />
                 <label htmlFor="allowImageUpload" className="ml-2 block text-sm text-gray-700">
                   Povolit upload obrázků
@@ -239,6 +248,7 @@ export default function SettingsManager() {
                   checked={settings.enableScheduling}
                   onChange={(e) => setSettings((prev) => ({ ...prev, enableScheduling: e.target.checked }))}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  title="Povolit plánování"
                 />
                 <label htmlFor="enableScheduling" className="ml-2 block text-sm text-gray-700">
                   Povolit plánování publikování
@@ -252,6 +262,7 @@ export default function SettingsManager() {
                   checked={settings.requireApproval}
                   onChange={(e) => setSettings((prev) => ({ ...prev, requireApproval: e.target.checked }))}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  title="Vyžadovat schválení"
                 />
                 <label htmlFor="requireApproval" className="ml-2 block text-sm text-gray-700">
                   Vyžadovat schválení před publikováním
@@ -272,6 +283,7 @@ export default function SettingsManager() {
                   checked={settings.emailNotifications}
                   onChange={(e) => setSettings((prev) => ({ ...prev, emailNotifications: e.target.checked }))}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  title="Povolit emailové notifikace"
                 />
                 <label htmlFor="emailNotifications" className="ml-2 block text-sm text-gray-700">
                   Povolit emailové notifikace
@@ -286,6 +298,7 @@ export default function SettingsManager() {
                   onChange={(e) => setSettings((prev) => ({ ...prev, newArticleNotification: e.target.checked }))}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   disabled={!settings.emailNotifications}
+                  title="Notifikace nového článku"
                 />
                 <label
                   htmlFor="newArticleNotification"

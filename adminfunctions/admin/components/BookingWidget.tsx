@@ -42,16 +42,19 @@ import { Rezervace } from '../../../types/rezervace';
 
 // Typy pro provozní hodiny
 interface ProvozniHodiny {
-  den_tydne: number;
-  cas_otevrani: string;
-  cas_zavreni: string;
-  je_zavreno: boolean;
+  id: number;
+  denTydne: number;
+  casOtevrani: string;
+  casZavreni: string;
+  jeZavreno: boolean;
 }
 
 export function BookingWidget() {
   const [activeTab, setActiveTab] = useState('seznam');
   const [rezervace, setRezervace] = useState<Rezervace[]>([]);
+  const [provozniHodiny, setProvozniHodiny] = useState<ProvozniHodiny[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingHodiny, setLoadingHodiny] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date());
   const [showReservationForm, setShowReservationForm] = useState(false);
@@ -118,19 +121,77 @@ export function BookingWidget() {
     }
   ];
 
-  const mockProvozniHodiny: ProvozniHodiny[] = [
-    { den_tydne: 1, cas_otevrani: '09:00', cas_zavreni: '18:00', je_zavreno: false },
-    { den_tydne: 2, cas_otevrani: '09:00', cas_zavreni: '18:00', je_zavreno: false },
-    { den_tydne: 3, cas_otevrani: '09:00', cas_zavreni: '18:00', je_zavreno: false },
-    { den_tydne: 4, cas_otevrani: '09:00', cas_zavreni: '18:00', je_zavreno: false },
-    { den_tydne: 5, cas_otevrani: '09:00', cas_zavreni: '18:00', je_zavreno: false },
-    { den_tydne: 6, cas_otevrani: '09:00', cas_zavreni: '16:00', je_zavreno: false },
-    { den_tydne: 7, cas_otevrani: '00:00', cas_zavreni: '00:00', je_zavreno: true }
-  ];
+  const mockProvozniHodiny: ProvozniHodiny[] = []; // Již se nepoužívá, ale necháme prázdné pro jistotu
 
   useEffect(() => {
     loadReservations();
-  }, []); // Odstraníme závislost na selectedDate - chceme načíst všechny rezervace;
+    loadProvozniHodiny();
+  }, []);
+
+  // Načtení provozních hodin z API
+  const loadProvozniHodiny = async () => {
+    setLoadingHodiny(true);
+    try {
+      const response = await fetch('/api/admin/provozni-hodiny');
+      if (response.ok) {
+        const data = await response.json();
+        setProvozniHodiny(data);
+      }
+    } catch (error) {
+      console.error('Chyba při načítání provozních hodin:', error);
+    } finally {
+      setLoadingHodiny(false);
+    }
+  };
+
+  const handleEditOpeningHours = async (den: ProvozniHodiny) => {
+    if (den.jeZavreno) {
+      if (confirm(`Chcete otevřít v ${getDayName(den.denTydne)}?`)) {
+        await updateOpeningHours(den.id, '09:00', '18:00', false);
+      }
+      return;
+    }
+
+    const input = prompt(
+      `Upravit otevírací dobu pro ${getDayName(den.denTydne)} (formát HH:MM-HH:MM nebo 'zavřeno'):`,
+      `${den.casOtevrani}-${den.casZavreni}`
+    );
+
+    if (input === null) return;
+    
+    if (input.toLowerCase() === 'zavřeno') {
+      await updateOpeningHours(den.id, '00:00', '00:00', true);
+      return;
+    }
+
+    const match = input.match(/^(\d{2}:\d{2})-(\d{2}:\d{2})$/);
+    if (!match) {
+      alert('Neplatný formát. Použijte HH:MM-HH:MM');
+      return;
+    }
+
+    await updateOpeningHours(den.id, match[1], match[2], false);
+  };
+
+  const updateOpeningHours = async (id: number, casOtevrani: string, casZavreni: string, jeZavreno: boolean) => {
+    try {
+      const response = await fetch('/api/admin/provozni-hodiny', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, casOtevrani, casZavreni, jeZavreno })
+      });
+      
+      if (response.ok) {
+        alert('Otevírací doba byla aktualizována!');
+        loadProvozniHodiny();
+      } else {
+        alert('Chyba při ukládání.');
+      }
+    } catch (error) {
+      console.error('Error updating hours:', error);
+      alert('Chyba při úpravě.');
+    }
+  };
 
   // Načtení rezervací z API
   const loadReservations = async () => {
@@ -285,8 +346,8 @@ export function BookingWidget() {
   };
 
   const getDayName = (dayNumber: number) => {
-    const days = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
-    return days[dayNumber - 1];
+    const days = ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'];
+    return days[dayNumber];
   };
 
   // Statistiky
@@ -549,25 +610,39 @@ export function BookingWidget() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockProvozniHodiny.map((den) => (
-                    <div key={den.den_tydne} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="font-medium">
-                        {getDayName(den.den_tydne)}
+                  {loadingHodiny ? (
+                    <div className="text-center py-4">Načítání...</div>
+                  ) : (
+                    provozniHodiny.map((den) => (
+                      <div key={den.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="font-medium">
+                          {getDayName(den.denTydne)}
+                        </div>
+                        <div className="flex items-center gap-4">
+                          {den.jeZavreno ? (
+                            <div className="flex items-center gap-2">
+                              <Badge variant="secondary">Zavřeno</Badge>
+                              <Button variant="outline" size="sm" onClick={() => handleEditOpeningHours(den)}>
+                                Otevřít
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">{den.casOtevrani} - {den.casZavreni}</span>
+                              <Button variant="outline" size="sm" onClick={() => handleEditOpeningHours(den)}>
+                                Upravit
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-4">
-                        {den.je_zavreno ? (
-                          <Badge variant="secondary">Zavřeno</Badge>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm">{den.cas_otevrani} - {den.cas_zavreni}</span>
-                            <Button variant="outline" size="sm">
-                              Upravit
-                            </Button>
-                          </div>
-                        )}
-                      </div>
+                    ))
+                  )}
+                  {provozniHodiny.length === 0 && !loadingHodiny && (
+                    <div className="text-center py-4 text-muted-foreground">
+                      Žádná data nejsou k dispozici.
                     </div>
-                  ))}
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -24,7 +24,7 @@ export default function KontaktPage() {
       <Navbar />
       
       {/* Hero sekce pro kontakt */}
-      <section className="bg-gradient-to-br from-[#B8A876] to-[#A39566] text-white py-24 px-4 sm:px-6 lg:px-8 mt-16">
+      <section className="bg-linear-to-br from-[#B8A876] to-[#A39566] text-white py-24 px-4 sm:px-6 lg:px-8 mt-16">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-wide">
             KONTAKT
@@ -49,7 +49,7 @@ export default function KontaktPage() {
                   {/* Adresa */}
                   <div className="flex items-start space-x-4">
                     <div className="bg-[#B8A876] text-white p-3 rounded-full">
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-label="Ikona adresy">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                       </svg>
                     </div>
@@ -66,7 +66,7 @@ export default function KontaktPage() {
                   {/* Telefon */}
                   <div className="flex items-start space-x-4">
                     <div className="bg-[#B8A876] text-white p-3 rounded-full">
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-label="Ikona telefonu">
                         <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
                       </svg>
                     </div>
@@ -81,7 +81,7 @@ export default function KontaktPage() {
                   {/* Email */}
                   <div className="flex items-start space-x-4">
                     <div className="bg-[#B8A876] text-white p-3 rounded-full">
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-label="Ikona emailu">
                         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                       </svg>
                     </div>
@@ -96,7 +96,7 @@ export default function KontaktPage() {
                   {/* Web */}
                   <div className="flex items-start space-x-4">
                     <div className="bg-[#B8A876] text-white p-3 rounded-full">
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-label="Ikona webu">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                       </svg>
                     </div>
@@ -114,32 +114,32 @@ export default function KontaktPage() {
               <div>
                 <h3 className="text-2xl font-bold text-[#333333] mb-6">Otevírací hodiny</h3>
                 <div className="bg-white p-6 rounded-lg shadow-lg">
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
+                  <div className="space-y-3" role="list">
+                    <div className="flex justify-between" role="listitem">
                       <span className="font-medium">Pondělí</span>
                       <span className="text-[#555555]">9:00 - 18:00</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between" role="listitem">
                       <span className="font-medium">Úterý</span>
                       <span className="text-[#555555]">9:00 - 18:00</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between" role="listitem">
                       <span className="font-medium">Středa</span>
                       <span className="text-[#555555]">9:00 - 18:00</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between" role="listitem">
                       <span className="font-medium">Čtvrtek</span>
                       <span className="text-[#555555]">9:00 - 20:00</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between" role="listitem">
                       <span className="font-medium">Pátek</span>
                       <span className="text-[#555555]">9:00 - 18:00</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between" role="listitem">
                       <span className="font-medium">Sobota</span>
                       <span className="text-[#555555]">8:00 - 14:00</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between" role="listitem">
                       <span className="font-medium text-red-600">Neděle</span>
                       <span className="text-red-600">ZAVŘENO</span>
                     </div>
@@ -162,47 +162,55 @@ export default function KontaktPage() {
                 <form className="bg-white p-6 rounded-lg shadow-lg space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-[#333333] mb-2">
+                      <label htmlFor="kontakt-jmeno" className="block text-sm font-medium text-[#333333] mb-2">
                         Jméno *
                       </label>
                       <input 
+                        id="kontakt-jmeno"
                         type="text" 
                         required
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B8A876]"
                         placeholder="Vaše jméno"
+                        title="Vaše jméno"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[#333333] mb-2">
+                      <label htmlFor="kontakt-email" className="block text-sm font-medium text-[#333333] mb-2">
                         Email *
                       </label>
                       <input 
+                        id="kontakt-email"
                         type="email" 
                         required
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B8A876]"
                         placeholder="vas@email.cz"
+                        title="Váš email"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[#333333] mb-2">
+                    <label htmlFor="kontakt-telefon" className="block text-sm font-medium text-[#333333] mb-2">
                       Telefon
                     </label>
                     <input 
+                      id="kontakt-telefon"
                       type="tel"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B8A876]"
                       placeholder="+420 123 456 789"
+                      title="Váš telefon"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[#333333] mb-2">
+                    <label htmlFor="kontakt-zprava" className="block text-sm font-medium text-[#333333] mb-2">
                       Zpráva *
                     </label>
                     <textarea 
+                      id="kontakt-zprava"
                       required
                       rows={5}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B8A876]"
                       placeholder="Vaše zpráva..."
+                      title="Vaše zpráva"
                     ></textarea>
                   </div>
                   <button 

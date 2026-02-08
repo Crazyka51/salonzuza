@@ -127,9 +127,9 @@ export default function SluzbyPage() {
       <Navbar />
       
       {/* Hero sekce pro služby */}
-      <section className="bg-gradient-to-br from-[#B8A876] to-[#A39566] text-white py-24 px-4 sm:px-6 lg:px-8 mt-16">
+      <section className="bg-linear-to-br from-[#B8A876] to-[#A39566] text-white py-24 px-4 sm:px-6 lg:px-8 mt-16">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-6 mb-6">
+          <div className="flex items-center justify-center gap-6 mb-6 text-white">
             <Image 
               src="/logo_salon.webp" 
               alt="Salon Zuza Logo" 
@@ -164,7 +164,7 @@ export default function SluzbyPage() {
               className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
             >
               <div className="md:w-1/3 flex justify-center">
-                <div className="w-32 h-32 bg-gradient-to-br from-[#B8A876] to-[#A39566] rounded-full flex items-center justify-center shadow-lg">
+                <div className="w-32 h-32 bg-linear-to-br from-[#B8A876] to-[#A39566] rounded-full flex items-center justify-center shadow-lg">
                   {renderIkona(sluzba.ikona)}
                 </div>
               </div>
