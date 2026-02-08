@@ -210,13 +210,13 @@ export default function AnalyticsWidget() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="space-y-4 sm:space-y-6">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {[1, 2, 3, 4].map((i) => (
             <Card key={i} className="animate-pulse">
-              <CardContent className="p-6">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-8 bg-gray-200 rounded w-1/2"></div>
+              <CardContent className="p-4 sm:p-6">
+                <div className="h-3 sm:h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                <div className="h-6 sm:h-8 bg-gray-200 rounded w-1/2"></div>
               </CardContent>
             </Card>
           ))}
@@ -228,24 +228,24 @@ export default function AnalyticsWidget() {
   if (!data) {
     return (
       <Card>
-        <CardContent className="p-6">
-          <p className="text-gray-500">Nepodařilo se načíst analytická data.</p>
+        <CardContent className="p-4 sm:p-6">
+          <p className="text-gray-500 text-center">Nepodařilo se načíst analytická data.</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h2>
-          <p className="text-sm text-gray-500">Poslední aktualizace: {lastUpdated.toLocaleString("cs-CZ")}</p>
+        <div className="text-center sm:text-left w-full sm:w-auto">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Analytics Dashboard</h2>
+          <p className="text-xs sm:text-sm text-gray-500">Poslední aktualizace: {lastUpdated.toLocaleString("cs-CZ")}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="w-full sm:w-32">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -254,28 +254,28 @@ export default function AnalyticsWidget() {
               <SelectItem value="90d">90 dní</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="sm" onClick={fetchAnalytics}>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Obnovit
+          <Button variant="outline" size="sm" onClick={fetchAnalytics} className="w-full sm:w-auto">
+            <RefreshCw className={`h-4 w-4 mr-1 sm:mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Obnovit</span>
           </Button>
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
             <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="h-4 w-4 mr-2" />
-              GA4
+              <ExternalLink className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">GA4</span>
             </a>
           </Button>
         </div>
       </div>
 
       {/* Overview Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Uživatelé</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Uživatelé</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(data.overview.users)}</div>
+            <div className="text-xl sm:text-2xl font-bold">{formatNumber(data.overview.users)}</div>
             <div className="flex items-center text-xs text-muted-foreground">
               <TrendIcon change={data.overview.usersChange} />
               <span className={`ml-1 ${data.overview.usersChange > 0 ? "text-green-600" : "text-red-600"}`}>
@@ -289,11 +289,11 @@ export default function AnalyticsWidget() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Relace</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Relace</CardTitle>
             <MousePointer className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(data.overview.sessions)}</div>
+            <div className="text-xl sm:text-2xl font-bold">{formatNumber(data.overview.sessions)}</div>
             <div className="flex items-center text-xs text-muted-foreground">
               <TrendIcon change={data.overview.sessionsChange} />
               <span className={`ml-1 ${data.overview.sessionsChange > 0 ? "text-green-600" : "text-red-600"}`}>
@@ -307,11 +307,11 @@ export default function AnalyticsWidget() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Zobrazení stránek</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Zobrazení stránek</CardTitle>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(data.overview.pageviews)}</div>
+            <div className="text-xl sm:text-2xl font-bold">{formatNumber(data.overview.pageviews)}</div>
             <div className="flex items-center text-xs text-muted-foreground">
               <TrendIcon change={data.overview.pageviewsChange} />
               <span className={`ml-1 ${data.overview.pageviewsChange > 0 ? "text-green-600" : "text-red-600"}`}>
@@ -325,33 +325,33 @@ export default function AnalyticsWidget() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Průměrná doba relace</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Průměrná doba relace</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatDuration(data.overview.avgSessionDuration)}</div>
+            <div className="text-xl sm:text-2xl font-bold">{formatDuration(data.overview.avgSessionDuration)}</div>
             <p className="text-xs text-muted-foreground">Bounce rate: {data.overview.bounceRate}%</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Detailed Analytics */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
         {/* Top Pages */}
         <Card>
           <CardHeader>
-            <CardTitle>Nejnavštěvovanější stránky</CardTitle>
-            <CardDescription>Stránky s nejvyšší návštěvností</CardDescription>
+            <CardTitle className="text-base sm:text-lg">Nejnavštěvovanější stránky</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Stránky s nejvyšší návštěvností</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {data.topPages.map((page, index) => (
-                <div key={page.path} className="flex items-center justify-between">
+                <div key={page.path} className="flex items-center justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{page.path}</p>
+                    <p className="text-xs sm:text-sm font-medium truncate">{page.path}</p>
                     <p className="text-xs text-gray-500">{formatNumber(page.views)} zobrazení</p>
                   </div>
-                  <div className="flex items-center ml-2">
+                  <div className="flex items-center flex-shrink-0">
                     <TrendIcon change={page.change} />
                     <span className={`text-xs ml-1 ${page.change > 0 ? "text-green-600" : "text-red-600"}`}>
                       {page.change > 0 ? "+" : ""}
@@ -367,16 +367,16 @@ export default function AnalyticsWidget() {
         {/* Devices */}
         <Card>
           <CardHeader>
-            <CardTitle>Zařízení</CardTitle>
-            <CardDescription>Rozložení podle typu zařízení</CardDescription>
+            <CardTitle className="text-base sm:text-lg">Zařízení</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Rozložení podle typu zařízení</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {data.devices.map((device) => (
-                <div key={device.category} className="flex items-center justify-between">
-                  <div className="flex items-center">
+                <div key={device.category} className="flex items-center justify-between gap-2">
+                  <div className="flex items-center min-w-0">
                     {getDeviceIcon(device.category)}
-                    <span className="ml-2 text-sm font-medium">{device.category}</span>
+                    <span className="ml-2 text-xs sm:text-sm font-medium truncate">{device.category}</span>
                   </div>
                   <div className="flex items-center">
                     <span className="text-sm text-gray-600 mr-2">{formatNumber(device.users)}</span>

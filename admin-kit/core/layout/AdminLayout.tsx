@@ -297,20 +297,20 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
         <div className="flex-1 lg:ml-80">
           {/* Header */}
           <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-            <div className="flex h-16 items-center gap-4 px-6">
+            <div className="flex h-14 sm:h-16 items-center gap-2 sm:gap-4 px-3 sm:px-6">
               {/* Mobile Menu Button */}
               <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
                 <Menu className="h-5 w-5" />
               </Button>
 
               {/* Search */}
-              <div className="flex-1 max-w-md">
+              <div className="flex-1 max-w-xs sm:max-w-md">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <input
                     type="text"
                     placeholder="Vyhledávání..."
-                    className="w-full pl-10 pr-4 py-2 text-sm border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full pl-10 pr-4 py-1.5 sm:py-2 text-sm border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
               </div>
@@ -385,7 +385,7 @@ export function AdminLayout({ children, navigation = defaultNavigation, classNam
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 p-6">{children}</main>
+          <main className="flex-1 p-3 sm:p-4 lg:p-6">{children}</main>
         </div>
       </div>
     </div>

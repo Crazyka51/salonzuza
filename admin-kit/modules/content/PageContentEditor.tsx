@@ -122,13 +122,13 @@ export function PageContentEditor() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#B8A876]">Editor obsahu</h1>
-          <p className="text-muted-foreground mt-2">Spravujte textový obsah všech stránek webu</p>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="text-center sm:text-left">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-[#B8A876]">Editor obsahu</h1>
+          <p className="text-muted-foreground mt-2 text-sm sm:text-base">Spravujte textový obsah všech stránek webu</p>
         </div>
-        <Button onClick={() => setEditingItem({klic: '', hodnota: '', stranka: 'homepage'})}>
+        <Button onClick={() => setEditingItem({klic: '', hodnota: '', stranka: 'homepage'})} className="w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-2" />
           Přidat obsah
         </Button>
@@ -150,7 +150,7 @@ export function PageContentEditor() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="klic">Klíč obsahu *</Label>
                 <Input
@@ -185,16 +185,17 @@ export function PageContentEditor() {
                 value={editingItem.hodnota}
                 onChange={(e) => setEditingItem({...editingItem, hodnota: e.target.value})}
                 placeholder="Zadejte textový obsah..."
-                rows={6}
+                rows={4}
+                className="sm:rows-6"
               />
             </div>
 
-            <div className="flex gap-2">
-              <Button onClick={handleSave} disabled={isSaving}>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Button onClick={handleSave} disabled={isSaving} className="w-full sm:w-auto">
                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
                 Uložit
               </Button>
-              <Button variant="outline" onClick={() => setEditingItem(null)}>
+              <Button variant="outline" onClick={() => setEditingItem(null)} className="w-full sm:w-auto">
                 Zrušit
               </Button>
             </div>
@@ -205,10 +206,10 @@ export function PageContentEditor() {
       {/* Seznam obsahů */}
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Existující obsah</CardTitle>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <CardTitle className="text-base sm:text-lg">Existující obsah</CardTitle>
             <Select value={selectedStranka} onValueChange={setSelectedStranka}>
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-full sm:w-48">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -223,34 +224,38 @@ export function PageContentEditor() {
         <CardContent>
           <div className="space-y-4">
             {filteredObsahy.map((item) => (
-              <div key={item.id} className="flex items-start justify-between p-4 border rounded-lg">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <code className="bg-muted text-muted-foreground px-2 py-1 rounded text-sm font-mono">
+              <div key={item.id} className="flex flex-col sm:flex-row items-start justify-between p-3 sm:p-4 border rounded-lg gap-3">
+                <div className="flex-1 w-full sm:w-auto min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                    <code className="bg-muted text-muted-foreground px-2 py-1 rounded text-xs sm:text-sm font-mono break-all">
                       {item.klic}
                     </code>
-                    <span className="text-sm text-muted-foreground bg-accent text-accent-foreground px-2 py-1 rounded">
+                    <span className="text-xs sm:text-sm text-muted-foreground bg-accent text-accent-foreground px-2 py-1 rounded w-fit">
                       {item.stranka}
                     </span>
                   </div>
-                  <p className="text-foreground text-sm line-clamp-3">
+                  <p className="text-foreground text-xs sm:text-sm line-clamp-3 break-words">
                     {item.hodnota}
                   </p>
                 </div>
-                <div className="flex gap-2 ml-4">
+                <div className="flex gap-2 w-full sm:w-auto sm:ml-4">
                   <Button 
                     size="sm" 
                     variant="outline" 
                     onClick={() => setEditingItem(item)}
+                    className="flex-1 sm:flex-none"
                   >
-                    <Edit className="h-4 w-4" />
+                    <Edit className="h-4 w-4 mr-1 sm:mr-0" />
+                    <span className="sm:hidden">Upravit</span>
                   </Button>
                   <Button 
                     size="sm" 
                     variant="outline"
                     onClick={() => item.id && handleDelete(item.id)}
+                    className="flex-1 sm:flex-none"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4 mr-1 sm:mr-0" />
+                    <span className="sm:hidden">Smazat</span>
                   </Button>
                 </div>
               </div>

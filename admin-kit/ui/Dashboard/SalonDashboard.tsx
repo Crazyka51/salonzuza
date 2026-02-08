@@ -155,26 +155,26 @@ export function SalonDashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight text-[#B8A876]">Salon Zuza - Administrace</h1>
-        <p className="text-muted-foreground mt-2">
+      <div className="text-center sm:text-left">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#B8A876]">Salon Zuza - Administrace</h1>
+        <p className="text-muted-foreground mt-2 text-sm sm:text-base">
           Administrační panel pro správu salonu krásy
         </p>
       </div>
 
       {/* Tabs Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Přehled</TabsTrigger>
-          <TabsTrigger value="content">Obsah</TabsTrigger>
-          <TabsTrigger value="analytics">Statistiky</TabsTrigger>
-          <TabsTrigger value="booking">Rezervace</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm">Přehled</TabsTrigger>
+          <TabsTrigger value="content" className="text-xs sm:text-sm">Obsah</TabsTrigger>
+          <TabsTrigger value="analytics" className="text-xs sm:text-sm">Statistiky</TabsTrigger>
+          <TabsTrigger value="booking" className="text-xs sm:text-sm">Rezervace</TabsTrigger>
         </TabsList>
         
         {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-6 mt-6">
+        <TabsContent value="overview" className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
           {/* Quick Actions */}
           <div className="grid grid-cols-1 gap-4">
             <Card
@@ -182,14 +182,14 @@ export function SalonDashboard() {
               style={{ borderLeftColor: '#B8A876' }}
               onClick={() => setActiveTab('content')}
             >
-              <CardContent className="flex items-center p-6">
+              <CardContent className="flex items-center p-4 sm:p-6">
                 <FileText 
-                  className="h-8 w-8 mr-4" 
+                  className="h-6 w-6 sm:h-8 sm:w-8 mr-3 sm:mr-4 flex-shrink-0" 
                   style={{ color: '#B8A876' }}
                 />
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground">Editor obsahu</h3>
-                  <p className="text-sm text-muted-foreground">
+                <div className="min-w-0">
+                  <h3 className="text-base sm:text-lg font-semibold text-foreground">Editor obsahu</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Spravujte obsah stránek webu
                   </p>
                 </div>
@@ -198,20 +198,20 @@ export function SalonDashboard() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {stats.map((stat, index) => (
               <Card key={index}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
+                  <CardTitle className="text-xs sm:text-sm font-medium truncate">
                     {stat.title}
                   </CardTitle>
                   <stat.icon 
-                    className="h-4 w-4 text-muted-foreground" 
+                    className="h-4 w-4 text-muted-foreground flex-shrink-0" 
                     style={{ color: stat.color }}
                   />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
                   <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                     {stat.trend === 'up' ? (
                       <TrendingUp className="h-3 w-3 text-green-500" />
@@ -228,14 +228,14 @@ export function SalonDashboard() {
           </div>
 
           {/* Charts and Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Website Traffic Chart */}
             <Card className="lg:col-span-2">
               <CardHeader>
                 <CardTitle>Návštěvnost webu a rezervace</CardTitle>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={250} className="sm:!h-[300px]">
                   <LineChart data={visitorsChartData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
@@ -265,14 +265,14 @@ export function SalonDashboard() {
               <CardHeader>
                 <CardTitle>Nedávná aktivita</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 sm:space-y-4">
                 {recentActivity.map((activity) => (
-                  <div key={activity.id} className="flex items-start space-x-3">
+                  <div key={activity.id} className="flex items-start space-x-2 sm:space-x-3">
                     <div className="flex-shrink-0 mt-0.5">
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">
+                      <p className="text-xs sm:text-sm font-medium truncate">
                         {activity.title}
                       </p>
                       <p className="text-xs text-muted-foreground">
@@ -287,16 +287,16 @@ export function SalonDashboard() {
 
           {/* Welcome Message */}
           <Card className="bg-gradient-to-r from-[#B8A876]/10 to-[#A39566]/10 border-[#B8A876]">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0">
-                  <Users className="h-12 w-12 text-[#B8A876]" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+                <div className="flex-shrink-0 mx-auto sm:mx-0">
+                  <Users className="h-10 w-10 sm:h-12 sm:w-12 text-[#B8A876]" />
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#B8A876]">
+                <div className="text-center sm:text-left">
+                  <h3 className="text-lg sm:text-xl font-semibold text-[#B8A876]">
                     Vítejte v administraci Salon Zuza
                   </h3>
-                  <p className="text-muted-foreground mt-1">
+                  <p className="text-muted-foreground mt-1 text-sm sm:text-base">
                     Spravujte obsah webu a sledujte statistiky návštěvnosti. 
                     Využijte rychlé akce pro editaci obsahu nebo záložku Statistiky pro detailní analýzy.
                   </p>

@@ -324,20 +324,20 @@ export function BookingWidget() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#B8A876]">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="text-center sm:text-left">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-[#B8A876]">
             Rezervační systém
           </h1>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-muted-foreground mt-2 text-sm sm:text-base">
             Správa rezervací, kalendář obsazenosti a nastavení provozních hodin
           </p>
         </div>
-        <Button className="bg-[#B8A876] hover:bg-[#A39566]">
+        <Button className="bg-[#B8A876] hover:bg-[#A39566] w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-2" />
-          Nová rezervace
+          <span className="sm:inline">Nová rezervace</span>
         </Button>
       </div>
 
@@ -390,21 +390,21 @@ export function BookingWidget() {
 
       {/* Tabs Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="seznam">Seznam rezervací</TabsTrigger>
-          <TabsTrigger value="kalendar">Kalendář</TabsTrigger>
-          <TabsTrigger value="nastaveni">Nastavení</TabsTrigger>
-          <TabsTrigger value="statistiky">Statistiky</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
+          <TabsTrigger value="seznam" className="text-xs sm:text-sm">Seznam</TabsTrigger>
+          <TabsTrigger value="kalendar" className="text-xs sm:text-sm">Kalendář</TabsTrigger>
+          <TabsTrigger value="nastaveni" className="text-xs sm:text-sm">Nastavení</TabsTrigger>
+          <TabsTrigger value="statistiky" className="text-xs sm:text-sm">Statistiky</TabsTrigger>
         </TabsList>
 
         {/* Seznam rezervací */}
-        <TabsContent value="seznam" className="mt-6">
+        <TabsContent value="seznam" className="mt-4 sm:mt-6">
           <Card>
             <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle>Seznam všech rezervací</CardTitle>
-                <div className="flex gap-2">
-                  <Button onClick={() => handleCreateReservation()}>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <CardTitle className="text-base sm:text-lg">Seznam všech rezervací</CardTitle>
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                  <Button onClick={() => handleCreateReservation()} className="w-full sm:w-auto">
                     <Plus className="h-4 w-4 mr-2" />
                     Nová rezervace
                   </Button>
@@ -419,18 +419,19 @@ export function BookingWidget() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Klient</TableHead>
-                    <TableHead>Datum & Čas</TableHead>
-                    <TableHead>Služba</TableHead>
-                    <TableHead>Stav</TableHead>
-                    <TableHead>Cena</TableHead>
-                    <TableHead>Akce</TableHead>
-                  </TableRow>
-                </TableHeader>
+            <CardContent className="p-0 sm:p-6">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="min-w-[200px]">Klient</TableHead>
+                      <TableHead className="min-w-[140px]">Datum & Čas</TableHead>
+                      <TableHead className="min-w-[120px]">Služba</TableHead>
+                      <TableHead className="min-w-[100px]">Stav</TableHead>
+                      <TableHead className="min-w-[80px]">Cena</TableHead>
+                      <TableHead className="min-w-[120px]">Akce</TableHead>
+                    </TableRow>
+                  </TableHeader>
                 <TableBody>
                   {rezervace.map((rezervace) => (
                     <TableRow key={rezervace.id}>
@@ -474,22 +475,24 @@ export function BookingWidget() {
                         {formatCurrency(rezervace.cena)}
                       </TableCell>
                       <TableCell>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1 justify-end">
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             title="Zobrazit detail"
                             onClick={() => handleReservationClick(rezervace)}
+                            className="h-8 w-8 p-0"
                           >
-                            <Eye className="h-4 w-4 text-muted-foreground" />
+                            <Eye className="h-3 w-3 text-muted-foreground" />
                           </Button>
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             title="Upravit rezervaci"
                             onClick={() => handleEditReservation(rezervace)}
+                            className="h-8 w-8 p-0"
                           >
-                            <Edit className="h-4 w-4 text-muted-foreground" />
+                            <Edit className="h-3 w-3 text-muted-foreground" />
                           </Button>
                           {rezervace.stav === 'pending' && (
                             <Button 
@@ -497,8 +500,9 @@ export function BookingWidget() {
                               size="sm" 
                               title="Potvrdit rezervaci"
                               onClick={() => handleConfirmReservation(rezervace)}
+                              className="h-8 w-8 p-0"
                             >
-                              <Check className="h-4 w-4 text-green-500 dark:text-green-400" />
+                              <Check className="h-3 w-3 text-green-500 dark:text-green-400" />
                             </Button>
                           )}
                           <Button 
@@ -506,6 +510,7 @@ export function BookingWidget() {
                             size="sm" 
                             title="Zrušit rezervaci"
                             onClick={() => handleDeleteReservation(rezervace)}
+                            className="h-8 w-8 p-0"
                           >
                             <X className="h-4 w-4 text-red-500 dark:text-red-400" />
                           </Button>
