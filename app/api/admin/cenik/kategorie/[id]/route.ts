@@ -9,10 +9,11 @@ export const dynamic = 'force-dynamic'
 // PUT - aktualizovat kategorii
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id)
+    const { id: idParam } = await params
+    const id = parseInt(idParam)
     const data = await request.json()
 
     if (!data.nazev) {
@@ -52,10 +53,11 @@ export async function PUT(
 // DELETE - smazat kategorii
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id)
+    const { id: idParam } = await params
+    const id = parseInt(idParam)
 
     // Zkontroluj, jestli kategorie má služby
     const kategorie = await prisma.kategorieSluzeb.findUnique({

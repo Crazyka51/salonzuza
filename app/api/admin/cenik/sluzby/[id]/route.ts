@@ -9,10 +9,11 @@ export const dynamic = 'force-dynamic'
 // PUT - aktualizovat službu
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id)
+    const { id: idParam } = await params
+    const id = parseInt(idParam)
     const data = await request.json()
     
     const aktualizovanaSluzba = await prisma.sluzba.update({
@@ -46,10 +47,11 @@ export async function PUT(
 // DELETE - smazat službu
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id)
+    const { id: idParam } = await params
+    const id = parseInt(idParam)
     
     await prisma.sluzba.delete({
       where: { id }

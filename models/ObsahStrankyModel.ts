@@ -21,7 +21,7 @@ export class ObsahStrankyModel {
     }
   }
 
-  static async getObsahPodleKategorie(kategorie: string): Promise<Array<{ klic: string; obsah: string; nazev?: string }>> {
+  static async getObsahPodleKategorie(kategorie: string): Promise<Array<{ id: number; klic: string; obsah: string; nazev?: string }>> {
     try {
       const obsahy = await prisma.obsahStranky.findMany({
         where: {

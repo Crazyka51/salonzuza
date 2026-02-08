@@ -69,6 +69,10 @@ export interface AdminUser {
   role?: string
   permissions?: string[]
   avatar?: string
+  phone?: string
+  address?: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface AdminPermission {

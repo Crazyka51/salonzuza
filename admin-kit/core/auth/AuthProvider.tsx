@@ -47,9 +47,7 @@ export function AuthProvider({
             name: "Admin Uživatel",
             email: "admin@salonzuza.cz",
             role: "admin",
-            avatar: "/zajac.jpg",
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            avatar: "/zajac.jpg"
           })
         }
       } catch (err) {
@@ -60,9 +58,7 @@ export function AuthProvider({
           name: "Admin Uživatel",
           email: "admin@salonzuza.cz",
           role: "admin",
-          avatar: "/zajac.jpg",
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          avatar: "/zajac.jpg"
         })
       } finally {
         setLoading(false)
