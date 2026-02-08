@@ -224,7 +224,7 @@ export function PageContentEditor() {
         <CardContent>
           <div className="space-y-4">
             {filteredObsahy.map((item) => (
-              <div key={item.id} className="flex flex-col sm:flex-row items-start justify-between p-3 sm:p-4 border rounded-lg gap-3">
+              <div key={item.id || item.klic} className="flex flex-col sm:flex-row items-start justify-between p-3 sm:p-4 border rounded-lg gap-3">
                 <div className="flex-1 w-full sm:w-auto min-w-0">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
                     <code className="bg-muted text-muted-foreground px-2 py-1 rounded text-xs sm:text-sm font-mono break-all">

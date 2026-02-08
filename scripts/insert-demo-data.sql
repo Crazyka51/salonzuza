@@ -18,9 +18,9 @@ ON CONFLICT DO NOTHING;
 
 -- Zaměstnanci
 INSERT INTO zamestnanci (jmeno, prijmeni, uroven, email, telefon, je_aktivni) VALUES
-('Zuzana', 'Nováková', 'top_stylist', 'zuzana@salonzuza.cz', '+420 777 123 456', true),
-('Marie', 'Svobodová', 'stylist', 'marie@salonzuza.cz', '+420 608 987 654', true),
-('Anna', 'Procházková', 'junior_stylist', 'anna@salonzuza.cz', '+420 721 555 888', true)
+('Zuzana', 'Slamáková ', 'top_stylist', 'zuzana@salon-zuza.cz', '+420 724 311 258', true),
+('Tereza', 'Brichtová', 'stylist', 'tereza@salon-zuza.cz', '+420 724 311 258', true),
+
 ON CONFLICT (email) DO NOTHING;
 
 -- Ukázkové rezervace pro dnešek a další dny

@@ -20,6 +20,12 @@ interface ReservationData {
   cena: number;
 }
 
+const getBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return 'http://localhost:3000';
+};
+
 export class NotificationService {
   // Email notifikace při vytvoření rezervace
   static async sendReservationConfirmation(
@@ -49,7 +55,7 @@ export class NotificationService {
       };
 
       // V produkci by se posílalo přes email service (Resend, SendGrid, apod.)
-      const response = await fetch('/api/notifications/email', {
+      const response = await fetch(`${getBaseUrl()}/api/notifications/email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +108,7 @@ export class NotificationService {
         },
       };
 
-      const response = await fetch('/api/notifications/email', {
+      const response = await fetch(`${getBaseUrl()}/api/notifications/email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -139,7 +145,7 @@ export class NotificationService {
       };
 
       // V produkci by se posílalo přes SMS service (Twilio, apod.)
-      const response = await fetch('/api/notifications/sms', {
+      const response = await fetch(`${getBaseUrl()}/api/notifications/sms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -182,11 +188,11 @@ export class NotificationService {
           sluzba: reservation.sluzba?.nazev || 'Služba',
           cena: this.formatCena(reservation.cena),
           rezervaceId: reservation.id,
-          adminUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/admin/rezervace/${reservation.id}`,
+          adminUrl: `${getBaseUrl()}/admin/rezervace/${reservation.id}`,
         },
       };
 
-      const response = await fetch('/api/notifications/email', {
+      const response = await fetch(`${getBaseUrl()}/api/notifications/email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -217,7 +223,7 @@ export class NotificationService {
       tomorrow.setDate(tomorrow.getDate() + 1);
       
       const response = await fetch(
-        `/api/rezervace?datum=${tomorrow.toISOString().split('T')[0]}&stav=confirmed`
+        `${getBaseUrl()}/api/rezervace?datum=${tomorrow.toISOString().split('T')[0]}&stav=confirmed`
       );
 
       if (!response.ok) {

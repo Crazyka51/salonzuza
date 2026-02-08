@@ -9,7 +9,7 @@ export default function GaleriePage() {
       <Navbar />
       
       {/* Hero sekce pro galerii */}
-      <section className="bg-gradient-to-br from-[#B8A876] to-[#A39566] text-white py-24 px-4 sm:px-6 lg:px-8 mt-16">
+      <section className="bg-linear-to-br from-[#B8A876] to-[#A39566] text-white py-24 px-4 sm:px-6 lg:px-8 mt-16">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-wide">
             GALERIE
